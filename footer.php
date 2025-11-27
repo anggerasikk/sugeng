@@ -61,14 +61,6 @@ $light_cream = "#F5F1DC";
                 <h4 style="color: <?php echo $accent_orange; ?>; margin-bottom: 20px; font-size: 18px;">Lokasi Kami</h4>
                 <div style="background: rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 15px; height: 200px;">
                     <!-- Placeholder untuk Google Maps -->
-                    <div style="width: 100%; height: 100%; background: rgba(255, 255, 255, 0.2); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: <?php echo $light_cream; ?>;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 48px; margin-bottom: 10px;">🗺️</div>
-                            <p>Google Maps Integration</p>
-                            <small>Koordinat: -6.2088, 106.8456</small>
-                        </div>
-                    </div>
-                    <!-- Untuk implementasi nyata, ganti dengan:
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8456!3d-6.2088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTInMzEuNiJTIDEwNsKwNTAnNDQuMiJF!5e0!3m2!1sen!2sid!4v1620000000000!5m2!1sen!2sid" 
                         width="100%" 
@@ -77,7 +69,6 @@ $light_cream = "#F5F1DC";
                         allowfullscreen="" 
                         loading="lazy">
                     </iframe>
-                    -->
                 </div>
             </div>
         </div>
