@@ -1,352 +1,477 @@
 <?php include '../header.php'; ?>
 
 <style>
-    .blog-hero {
-        background: linear-gradient(135deg, <?php echo $primary_blue; ?>, <?php echo $secondary_blue; ?>);
-        color: <?php echo $light_cream; ?>;
-        padding: 80px 0 60px;
-        text-align: center;
+    /* Reset & Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    .blog-hero h1 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-        color: <?php echo $light_cream; ?>;
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f8f9fa;
     }
 
-    .blog-hero p {
-        font-size: 1.1rem;
-        max-width: 600px;
-        margin: 0 auto;
-        opacity: 0.9;
-    }
-
-    .blog-container {
+    .news-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 40px 20px;
     }
 
-    .blog-content {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
+    /* Hero Section - Simpler */
+    .news-hero {
+        text-align: center;
+        padding: 60px 0 40px;
+        border-bottom: 2px solid <?php echo $accent_orange; ?>;
+        margin-bottom: 40px;
+    }
+
+    .news-hero h1 {
+        font-size: 3rem;
+        color: <?php echo $primary_blue; ?>;
+        margin-bottom: 15px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .news-hero p {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.5;
+    }
+
+    /* Main Content Layout */
+    .main-content {
+        display: flex;
         gap: 40px;
         margin-bottom: 60px;
     }
 
+    .left-column {
+        flex: 3;
+    }
+
+    .right-column {
+        flex: 1;
+    }
+
+    /* Featured Article - Large */
     .featured-article {
         background: white;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: 40px;
+        border: 1px solid #eaeaea;
+    }
+
+    .featured-image {
+        width: 100%;
+        height: 350px;
+        background: linear-gradient(45deg, <?php echo $primary_blue; ?>, <?php echo $secondary_blue; ?>);
+        position: relative;
         overflow: hidden;
     }
 
-    .article-image {
-        width: 100%;
-        height: 300px;
-        background: linear-gradient(45deg, <?php echo $secondary_blue; ?>, <?php echo $accent_orange; ?>);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .featured-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(0,0,0,0.2), rgba(0,0,0,0.1));
+    }
+
+    .featured-image .icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem;
         color: white;
-        font-size: 1.5rem;
-        position: relative;
+        opacity: 0.9;
     }
 
-    .article-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .featured-content {
+        padding: 40px;
     }
 
-    .article-content {
-        padding: 30px;
+    .featured-content h2 {
+        font-size: 2.2rem;
+        color: <?php echo $primary_blue; ?>;
+        margin-bottom: 20px;
+        line-height: 1.3;
+        font-weight: 700;
     }
 
-    .article-meta {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 15px;
-        color: #666;
-        font-size: 0.9rem;
+    .featured-content p {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.7;
+        margin-bottom: 25px;
     }
 
-    .article-meta span {
+    .featured-meta {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 20px;
+        color: #777;
+        font-size: 0.9rem;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
     }
 
-    .article-content h2 {
-        color: <?php echo $primary_blue; ?>;
-        margin-bottom: 15px;
-        font-size: 1.8rem;
+    .featured-meta span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
-    .article-content p {
-        line-height: 1.6;
-        color: #555;
-        margin-bottom: 20px;
-    }
-
-    .read-more {
+    .read-more-btn {
+        display: inline-block;
         background: <?php echo $accent_orange; ?>;
         color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        padding: 12px 30px;
+        border-radius: 4px;
         text-decoration: none;
-        display: inline-block;
-        transition: background 0.3s ease;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
     }
 
-    .read-more:hover {
+    .read-more-btn:hover {
         background: #e67300;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(230, 115, 0, 0.2);
     }
 
+    /* Other News Section */
     .other-news {
-        background: <?php echo $light_cream; ?>;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #eaeaea;
+        margin-bottom: 40px;
     }
 
-    .other-news h3 {
+    .section-title {
+        font-size: 1.8rem;
         color: <?php echo $primary_blue; ?>;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
         border-bottom: 2px solid <?php echo $accent_orange; ?>;
+        font-weight: 700;
     }
 
     .news-list {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 25px;
     }
 
     .news-item {
-        display: flex;
-        gap: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #ddd;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border-left: 4px solid <?php echo $primary_blue; ?>;
+        transition: all 0.3s ease;
     }
 
-    .news-item:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
+    .news-item:hover {
+        background: #f0f2f5;
+        transform: translateX(5px);
     }
 
-    .news-image {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(45deg, <?php echo $secondary_blue; ?>, <?php echo $accent_orange; ?>);
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 0.8rem;
-        flex-shrink: 0;
-    }
-
-    .news-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-
-    .news-content h4 {
+    .news-item h3 {
+        font-size: 1.2rem;
         color: <?php echo $primary_blue; ?>;
-        margin-bottom: 5px;
-        font-size: 1rem;
-    }
-
-    .news-content p {
-        color: #666;
-        font-size: 0.85rem;
+        margin-bottom: 8px;
+        font-weight: 600;
         line-height: 1.4;
     }
 
+    .news-item p {
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
     .news-date {
+        font-size: 0.85rem;
         color: <?php echo $accent_orange; ?>;
-        font-size: 0.8rem;
-        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* Articles Grid - 3 columns */
+    .articles-section {
+        margin-top: 60px;
     }
 
     .articles-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 30px;
-        margin-top: 40px;
+        margin-top: 30px;
     }
 
     .article-card {
         background: white;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
         overflow: hidden;
-        transition: transform 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 1px solid #eaeaea;
     }
 
     .article-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
 
     .card-image {
         width: 100%;
-        height: 200px;
+        height: 180px;
         background: linear-gradient(45deg, <?php echo $secondary_blue; ?>, <?php echo $accent_orange; ?>);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.2rem;
+        position: relative;
+        overflow: hidden;
     }
 
-    .card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .card-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(0,0,0,0.2), rgba(0,0,0,0.1));
+    }
+
+    .card-image .icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2.5rem;
+        color: white;
+        opacity: 0.9;
     }
 
     .card-content {
-        padding: 20px;
+        padding: 25px;
     }
 
     .card-content h3 {
-        color: <?php echo $primary_blue; ?>;
-        margin-bottom: 10px;
         font-size: 1.3rem;
+        color: <?php echo $primary_blue; ?>;
+        margin-bottom: 15px;
+        line-height: 1.4;
+        font-weight: 600;
     }
 
     .card-content p {
+        font-size: 0.95rem;
         color: #666;
-        line-height: 1.5;
-        margin-bottom: 15px;
-        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
     }
 
     .card-meta {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 15px;
-        padding-top: 15px;
+        padding-top: 20px;
         border-top: 1px solid #eee;
     }
 
     .card-date {
+        font-size: 0.9rem;
         color: <?php echo $accent_orange; ?>;
-        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .read-more-small {
+        background: <?php echo $primary_blue; ?>;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .read-more-small:hover {
+        background: <?php echo $secondary_blue; ?>;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .main-content {
+            flex-direction: column;
+        }
+        
+        .articles-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .featured-content {
+            padding: 30px;
+        }
+        
+        .featured-content h2 {
+            font-size: 1.8rem;
+        }
     }
 
     @media (max-width: 768px) {
-        .blog-content {
-            grid-template-columns: 1fr;
+        .news-hero h1 {
+            font-size: 2.2rem;
+        }
+        
+        .news-hero p {
+            font-size: 1rem;
         }
         
         .articles-grid {
             grid-template-columns: 1fr;
         }
         
-        .blog-hero h1 {
-            font-size: 2rem;
+        .featured-image {
+            height: 250px;
+        }
+        
+        .featured-content h2 {
+            font-size: 1.6rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+        }
+        
+        .news-container {
+            padding: 20px 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .featured-content {
+            padding: 20px;
+        }
+        
+        .featured-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .news-item {
+            padding: 15px;
+        }
+        
+        .card-content {
+            padding: 20px;
         }
     }
 </style>
 
 <!-- Hero Section -->
-<section class="blog-hero">
-    <div class="blog-container">
-        <h1>Berita & Artikel Sugeng Rahayu</h1>
-        <p>Informasi terbaru seputar transportasi bus, layanan, dan inovasi dari Sugeng Rahayu</p>
+<section class="news-hero">
+    <div class="news-container">
+        <h1>Our News</h1>
+        <p>ColdBrews in two Dowskop Coffee and Beverages Industry Expertise in Indonesia</p>
     </div>
 </section>
 
 <!-- Main Content -->
-<div class="blog-container">
-    <div class="blog-content">
-        <!-- Featured Article -->
-        <div class="featured-article">
-            <div class="article-image">
-                <!-- Placeholder for featured image -->
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">🚌</div>
-                    <p>Gambar Featured Artikel</p>
+<div class="news-container">
+    <div class="main-content">
+        <!-- Left Column - Featured Article -->
+        <div class="left-column">
+            <!-- Featured Article -->
+            <div class="featured-article">
+                <div class="featured-image">
+                    <div class="icon">☕</div>
+                </div>
+                <div class="featured-content">
+                    <h2>Visited Doesoen Sitap Coffee, The Producer of Robusta in Central Java</h2>
+                    <div class="featured-meta">
+                        <span>📅 27 November 2025</span>
+                        <span>👁️ 1,245 Views</span>
+                        <span>🏷️ Coffee Industry</span>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <a href="#" class="read-more-btn">Read More</a>
                 </div>
             </div>
-            <div class="article-content">
-                <div class="article-meta">
-                    <span>📅 27 November 2025</span>
-                    <span>👁️ 1.245 Dilihat</span>
-                    <span>🏷️ Inovasi</span>
+
+            <!-- Other News -->
+            <div class="other-news">
+                <h2 class="section-title">Other News</h2>
+                <div class="news-list">
+                    <div class="news-item">
+                        <h3>Cold Brew Coffee, How to Drink Cold Coffee is More Enjoyable</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <div class="news-date">📅 15 November 2025</div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Meet Coffee Tonic, the Sensation of Drinking Coffee-Flavored Soda</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <div class="news-date">📅 10 November 2025</div>
+                    </div>
+                    
+                    <div class="news-item">
+                        <h3>Workshop Coffee Sharing Session</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <div class="news-date">📅 5 November 2025</div>
+                    </div>
                 </div>
-                <h2>Sugeng Rahayu Luncurkan Sistem Booking Online Terbaru dengan Fitur Real-Time Tracking</h2>
-                <p>Dalam upaya meningkatkan kenyamanan pelanggan, Sugeng Rahayu meluncurkan sistem booking online generasi terbaru yang dilengkapi dengan fitur real-time tracking. Penumpang kini dapat memantau posisi bus secara langsung melalui aplikasi mobile...</p>
-                <p>Fitur ini tidak hanya memberikan informasi akurat tentang perkiraan waktu kedatangan, tetapi juga meningkatkan transparansi layanan. Dengan teknologi GPS terkini, penumpang dapat merencanakan perjalanan dengan lebih baik dan mengurangi waktu tunggu.</p>
-                <a href="#" class="read-more">Baca Selengkapnya →</a>
             </div>
         </div>
 
-        <!-- Other News Sidebar -->
-        <div class="other-news">
-            <h3>Berita Lainnya</h3>
-            <div class="news-list">
-                <div class="news-item">
-                    <div class="news-image">
-                        <div style="text-align: center; font-size: 0.7rem;">
-                            <div>🎖️</div>
-                            <small>Penghargaan</small>
-                        </div>
+        <!-- Right Column - Recent News -->
+        <div class="right-column">
+            <div class="other-news">
+                <h2 class="section-title">Recent News</h2>
+                <div class="news-list">
+                    <div class="news-item">
+                        <h3>Workshop Coffee Brewing</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div class="news-date">📅 12 November 2025</div>
                     </div>
-                    <div class="news-content">
-                        <h4>Hadirkan Layanan Publik Berkualitas, Sugeng Rahayu Terima Penghargaan dari Kemenhub RI</h4>
-                        <p>Karanganyar, 6 Agustus 2025 - Konsistensi Sugeng Rahayu dalam memberikan layanan publik yang prima kembali mendapatkan pengakuan dari Pemerintah, melalui...</p>
-                        <div class="news-date">📅 6 Agustus 2025</div>
+                    
+                    <div class="news-item">
+                        <h3>Workshop Coffee Brewing</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div class="news-date">📅 8 November 2025</div>
                     </div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-image">
-                        <div style="text-align: center; font-size: 0.7rem;">
-                            <div>🔒</div>
-                            <small>Keamanan</small>
-                        </div>
+                    
+                    <div class="news-item">
+                        <h3>New Coffee Product Launch</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div class="news-date">📅 3 November 2025</div>
                     </div>
-                    <div class="news-content">
-                        <h4>KARYA: Solusi Aman Menitipkan Barang Berharga di Bus Sugeng Rahayu</h4>
-                        <p>Dalam setiap perjalanan jauh, membawa barang berharga seringkali menjadi kekhawatiran tersendiri bagi penumpang. Risiko kehilangan atau tertinggal bisa saja...</p>
-                        <div class="news-date">📅 15 September 2025</div>
-                    </div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-image">
-                        <div style="text-align: center; font-size: 0.7rem;">
-                            <div>🆔</div>
-                            <small>Regulasi</small>
-                        </div>
-                    </div>
-                    <div class="news-content">
-                        <h4>Pentingnya Penggunaan Identitas Resmi dalam Pembelian Tiket Sugeng Rahayu</h4>
-                        <p>Sebagai perusahaan transportasi yang mengutamakan kenyamanan dan keamanan pelanggan, Sugeng Rahayu senantiasa berkomitmen menghadirkan...</p>
-                        <div class="news-date">📅 3 Oktober 2025</div>
-                    </div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-image">
-                        <div style="text-align: center; font-size: 0.7rem;">
-                            <div>🔔</div>
-                            <small>Inovasi</small>
-                        </div>
-                    </div>
-                    <div class="news-content">
-                        <h4>Inovasi Baru Sugeng Rahayu, Panggil Awak Bus Semudah Menekan Tombol Bel</h4>
-                        <p>Karanganyar, 12 Agustus 2025 - Sugeng Rahayu berhasil menghadirkan terobosan demi memberikan layanan terbaik bagi para pengguna jasanya. Inovasi yang...</p>
-                        <div class="news-date">📅 12 Agustus 2025</div>
+                    
+                    <div class="news-item">
+                        <h3>Coffee Farm Visit Report</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div class="news-date">📅 28 October 2025</div>
                     </div>
                 </div>
             </div>
@@ -354,58 +479,51 @@
     </div>
 
     <!-- Articles Grid -->
-    <h2 style="color: <?php echo $primary_blue; ?>; margin-bottom: 20px; text-align: center;">Artikel Terbaru Lainnya</h2>
-    <div class="articles-grid">
-        <!-- Article 1 -->
-        <div class="article-card">
-            <div class="card-image">
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 2rem; margin-bottom: 10px;">🛡️</div>
-                    <p>Keamanan Digital</p>
+    <div class="articles-section">
+        <h2 class="section-title">Latest Articles</h2>
+        <div class="articles-grid">
+            <!-- Article 1 -->
+            <div class="article-card">
+                <div class="card-image">
+                    <div class="icon">🛡️</div>
+                </div>
+                <div class="card-content">
+                    <h3>Website Text 1</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <div class="card-meta">
+                        <span class="card-date">📅 20 November 2025</span>
+                        <a href="#" class="read-more-small">Read</a>
+                    </div>
                 </div>
             </div>
-            <div class="card-content">
-                <h3>Waspada Modus Penipuan Digital, Pastikan Beli Tiket Sugeng Rahayu Melalui Sumber Resmi</h3>
-                <p>Di era serba digital, penipuan bukan lagi hal baru. Modus scam marak terjadi di sektor keuangan, e-commerce, hingga media sosial. Para pelaku kejahatan siber memanfaatkan...</p>
-                <div class="card-meta">
-                    <span class="card-date">📅 25 Oktober 2025</span>
-                    <a href="#" class="read-more" style="padding: 5px 15px; font-size: 0.8rem;">Baca</a>
-                </div>
-            </div>
-        </div>
 
-        <!-- Article 2 -->
-        <div class="article-card">
-            <div class="card-image">
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 2rem; margin-bottom: 10px;">🌱</div>
-                    <p>Lingkungan</p>
+            <!-- Article 2 -->
+            <div class="article-card">
+                <div class="card-image">
+                    <div class="icon">🌱</div>
+                </div>
+                <div class="card-content">
+                    <h3>Website Text 2</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <div class="card-meta">
+                        <span class="card-date">📅 18 November 2025</span>
+                        <a href="#" class="read-more-small">Read</a>
+                    </div>
                 </div>
             </div>
-            <div class="card-content">
-                <h3>Sugeng Rahayu Komitmen Kurangi Emisi dengan Bus Ramah Lingkungan</h3>
-                <p>Sebagai bentuk kepedulian terhadap lingkungan, Sugeng Rahayu mulai mengoperasikan armada bus dengan teknologi Euro 5 yang lebih ramah lingkungan dan mengurangi...</p>
-                <div class="card-meta">
-                    <span class="card-date">📅 18 November 2025</span>
-                    <a href="#" class="read-more" style="padding: 5px 15px; font-size: 0.8rem;">Baca</a>
-                </div>
-            </div>
-        </div>
 
-        <!-- Article 3 -->
-        <div class="article-card">
-            <div class="card-image">
-                <div style="text-align: center; color: white;">
-                    <div style="font-size: 2rem; margin-bottom: 10px;">🎯</div>
-                    <p>Layanan</p>
+            <!-- Article 3 -->
+            <div class="article-card">
+                <div class="card-image">
+                    <div class="icon">🎯</div>
                 </div>
-            </div>
-            <div class="card-content">
-                <h3>Tingkatkan Layanan, Sugeng Rahayu Buka Rute Baru Jawa-Bali dengan Fasilitas Premium</h3>
-                <p>Melayani kebutuhan transportasi yang terus berkembang, Sugeng Rahayu resmi membuka rute baru menghubungkan Jawa Timur dengan Bali. Armada terbaru dilengkapi dengan...</p>
-                <div class="card-meta">
-                    <span class="card-date">📅 10 November 2025</span>
-                    <a href="#" class="read-more" style="padding: 5px 15px; font-size: 0.8rem;">Baca</a>
+                <div class="card-content">
+                    <h3>Website Text 3</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <div class="card-meta">
+                        <span class="card-date">📅 15 November 2025</span>
+                        <a href="#" class="read-more-small">Read</a>
+                    </div>
                 </div>
             </div>
         </div>

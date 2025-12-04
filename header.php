@@ -246,8 +246,8 @@ $light_cream = "#F5F1DC";
             </nav>
 
             <div class="auth-buttons">
-                <a href="login.php" class="btn btn-login">Masuk</a>
-                <a href="register.php" class="btn btn-register">Daftar</a>
+                <a href="signin.php" class="btn btn-login">Masuk</a>
+                <a href="signup.php" class="btn btn-register">Daftar</a>
             </div>
         </div>
     </header>
