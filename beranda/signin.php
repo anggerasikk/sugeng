@@ -1,6 +1,29 @@
-<?php include '../header.php'; ?>
+<?php
+require_once '../config.php';
+require_once '../includes/functions.php';
+
+// Redirect if already logged in
+if (is_logged_in()) {
+    if (is_admin()) {
+        header("Location: " . SITE_URL . "/admin/index.php");
+        exit;
+    } else {
+        header("Location: " . SITE_URL . "/beranda/index.php");
+        exit;
+    }
+}
+
+include 'header.php'; 
+?>
 
 <style>
+    :root {
+        --primary-blue: <?php echo $primary_blue; ?>;
+        --secondary-blue: <?php echo $secondary_blue; ?>;
+        --accent-orange: <?php echo $accent_orange; ?>;
+        --light-cream: <?php echo $light_cream; ?>;
+    }
+
     /* Reset & Base Styles */
     * {
         margin: 0;
@@ -47,12 +70,12 @@
 
     /* Left Side - Brand Section */
     .auth-brand {
-        background: linear-gradient(135deg, <?php echo $primary_blue; ?>, <?php echo $secondary_blue; ?>);
+        background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
         padding: 60px 40px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        color: <?php echo $light_cream; ?>;
+        color: var(--light-cream);
     }
 
     .brand-content {
@@ -63,7 +86,7 @@
         font-size: 2.8rem;
         margin-bottom: 20px;
         font-weight: 700;
-        color: <?php echo $light_cream; ?>;
+        color: var(--light-cream);
     }
 
     .brand-content p {
@@ -77,7 +100,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        color: <?php echo $accent_orange; ?>;
+        color: var(--accent-orange);
         text-decoration: none;
         font-weight: 600;
         font-size: 1.1rem;
@@ -113,7 +136,7 @@
     }
 
     .auth-title h2 {
-        color: <?php echo $primary_blue; ?>;
+        color: var(--primary-blue);
         font-size: 2rem;
         margin-bottom: 10px;
         font-weight: 700;
@@ -155,7 +178,7 @@
 
     .form-input:focus {
         outline: none;
-        border-color: <?php echo $accent_orange; ?>;
+        border-color: var(--accent-orange);
         box-shadow: 0 0 0 3px rgba(230, 115, 0, 0.1);
     }
 
@@ -187,7 +210,7 @@
     }
 
     .forgot-password {
-        color: <?php echo $accent_orange; ?>;
+        color: var(--accent-orange);
         text-decoration: none;
         font-size: 0.95rem;
         font-weight: 500;
@@ -201,7 +224,7 @@
 
     /* Buttons */
     .auth-button {
-        background: <?php echo $accent_orange; ?>;
+        background: var(--accent-orange);
         color: white;
         border: none;
         padding: 14px 20px;
@@ -278,7 +301,7 @@
     }
 
     .auth-footer a {
-        color: <?php echo $accent_orange; ?>;
+        color: var(--accent-orange);
         text-decoration: none;
         font-weight: 600;
         margin-left: 5px;
@@ -374,13 +397,15 @@
 </style>
 
 <div class="auth-container">
+    <?php echo display_flash(); ?>
+    
     <div class="auth-wrapper">
         <!-- Left Side - Brand Section -->
         <div class="auth-brand">
             <div class="brand-content">
                 <h1>Sugeng Rahayu</h1>
                 <p>Penyedia layanan transportasi bus terpercaya dengan pengalaman lebih dari 10 tahun. Melayani perjalanan antar kota dengan nyaman, aman, dan terjangkau.</p>
-                <a href="../index.php" class="read-more-link">Read More</a>
+                <a href="index.php" class="read-more-link">Read More</a>
             </div>
         </div>
 
@@ -391,7 +416,9 @@
                 <p>Sign in to your account</p>
             </div>
 
-            <form class="auth-form" action="#" method="POST">
+            <form class="auth-form" action="../auth/login-process.php" method="POST">
+                <?php echo csrf_field(); ?>
+                
                 <!-- Email Field -->
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -410,7 +437,7 @@
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember me</label>
                     </div>
-                    <a href="#" class="forgot-password">Forgot Password?</a>
+                    <a href="auth/forgot-password.php" class="forgot-password">Forgot Password?</a>
                 </div>
 
                 <!-- Sign In Button -->
@@ -436,4 +463,4 @@
     </div>
 </div>
 
-<?php include '../footer.php'; ?>
+<?php include 'footer.php'; ?>

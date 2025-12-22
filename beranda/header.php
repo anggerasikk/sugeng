@@ -1,4 +1,5 @@
 <?php
+include dirname(__DIR__) . '/config.php';
 // Warna dari palette
 $primary_blue = "#001BB7";
 $secondary_blue = "#0046FF";
@@ -231,24 +232,24 @@ $light_cream = "#F5F1DC";
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Perjalanan</a>
                         <div class="dropdown-content">
-                            <a href="<?php echo base_url('jadwal.php'); ?>">Jadwal Perjalanan</a>
-                            <a href="<?php echo base_url('booking/search-schedule.php'); ?>">Booking Tiket</a>
+                            <a href="../jadwal.php">Jadwal Perjalanan</a>
+                            <a href="../booking/search-schedule.php">Booking Tiket</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Perusahaan</a>
                         <div class="dropdown-content">
-                            <a href="<?php echo base_url('visi-misi.php'); ?>">Visi & Misi</a>
-                            <a href="<?php echo base_url('armada.php'); ?>">Armada Bus</a>
-                            <a href="<?php echo base_url('karir.php'); ?>">Karir</a>
+                            <a href="../visi-misi.php">Visi & Misi</a>
+                            <a href="../armada.php">Armada Bus</a>
+                            <a href="../karir.php">Karir</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Informasi</a>
                         <div class="dropdown-content">
-                            <a href="syarat.php">Syarat & Ketentuan</a>
-                            <a href="privasi.php">Kebijakan Privasi</a>
-                            <a href="sitemap.php">Peta Situs</a>
+                            <a href="../syarat.php">Syarat & Ketentuan</a>
+                            <a href="../privasi.php">Kebijakan Privasi</a>
+                            <a href="../sitemap.php">Peta Situs</a>
                         </div>
                     </li>
                 </ul>
@@ -261,11 +262,42 @@ $light_cream = "#F5F1DC";
                     </a>
                     <a href="<?php echo base_url('auth/logout.php'); ?>" class="btn btn-register">Logout</a>
                 <?php else: ?>
-                    <a href="<?php echo base_url('beranda/signin.php'); ?>" class="btn btn-login">Masuk</a>
-                    <a href="<?php echo base_url('beranda/signup.php'); ?>" class="btn btn-register">Daftar</a>
+                    <a href="signin.php" class="btn btn-login">Masuk</a>
+                    <a href="signup.php" class="btn btn-register">Daftar</a>
                 <?php endif; ?>
             </div>
         </div>
     </header>
 
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
 
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                if (!dropdown.contains(event.target)) {
+                    const dropdownContent = dropdown.querySelector('.dropdown-content');
+                    if (dropdownContent) {
+                        dropdownContent.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Handle dropdown on mobile
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            const link = dropdown.querySelector('.nav-link');
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    const content = this.nextElementSibling;
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        });
+    </script>

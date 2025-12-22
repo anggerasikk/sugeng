@@ -1,4 +1,15 @@
-<?php include '../header.php'; ?>
+<?php 
+
+require_once '../config.php';
+require_once '../includes/functions.php';
+include 'header.php';
+
+// Get routes for search form
+$routes = get_routes();
+
+// Get blog posts for news section
+$blog_posts = get_blog_posts(null, 3);
+?>
 
 <style>
     /* Reset & Base Styles */
@@ -765,4 +776,4 @@
     </div>
 </section>
 
-<?php include '../footer.php'; ?>
+<?php include 'footer.php'; ?>
