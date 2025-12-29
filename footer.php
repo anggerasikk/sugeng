@@ -78,9 +78,9 @@ $light_cream = "#F5F1DC";
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                 <p style="margin: 0;">&copy; <?php echo date('Y'); ?> Sugeng Rahayu. Semua hak dilindungi.</p>
                 <div style="display: flex; gap: 20px;">
-                    <a href="syarat.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Syarat & Ketentuan</a>
-                    <a href="privasi.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Kebijakan Privasi</a>
-                    <a href="sitemap.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Sitemap</a>
+                    <a href="<?php echo base_url('syarat.php'); ?>" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Syarat & Ketentuan</a>
+                    <a href="<?php echo base_url('privasi.php'); ?>" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Kebijakan Privasi</a>
+                    <a href="<?php echo base_url('sitemap.php'); ?>" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Sitemap</a>
                 </div>
             </div>
         </div>

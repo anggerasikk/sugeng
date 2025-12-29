@@ -728,7 +728,7 @@ include 'header.php';
     <div class="cta-section">
         <h2>Siap untuk Perjalanan Nyaman?</h2>
         <p>Pilih armada favorit Anda dan nikmati perjalanan yang aman serta nyaman bersama Sugeng Rahayu</p>
-        <a href="booking/index.php" class="btn-cta">Cari Jadwal Sekarang →</a>
+        <a href="jadwal.php" class="btn-cta">Cari Jadwal Sekarang →</a>
     </div>
 </div>
 

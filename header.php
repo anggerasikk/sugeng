@@ -218,7 +218,7 @@ $light_cream = "#F5F1DC";
     <header class="header">
         <div class="header-container">
             <div class="logo">
-                <a href="index.php" class="logo-text">Sugeng <span>Rahayu</span></a>
+                <a href="<?php echo base_url('index.php'); ?>" class="logo-text">Sugeng <span>Rahayu</span></a>
             </div>
 
             <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
@@ -226,13 +226,14 @@ $light_cream = "#F5F1DC";
             <nav>
                 <ul class="nav-menu" id="navMenu">
                     <li class="nav-item">
-                        <a href="index.php" class="nav-link">Beranda</a>
+                        <a href="<?php echo base_url('index.php'); ?>" class="nav-link">Beranda</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Perjalanan</a>
                         <div class="dropdown-content">
                             <a href="<?php echo base_url('jadwal.php'); ?>">Jadwal Perjalanan</a>
-                            <a href="<?php echo base_url('booking/search-schedule.php'); ?>">Booking Tiket</a>
+                            <a href="<?php echo base_url('rute.php'); ?>">Rute & Destinasi</a>
+                            <a href="<?php echo base_url('checkin/index.php'); ?>">Check-in Online</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -246,9 +247,9 @@ $light_cream = "#F5F1DC";
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Informasi</a>
                         <div class="dropdown-content">
-                            <a href="syarat.php">Syarat & Ketentuan</a>
-                            <a href="privasi.php">Kebijakan Privasi</a>
-                            <a href="sitemap.php">Peta Situs</a>
+                            <a href="<?php echo base_url('syarat.php'); ?>">Syarat & Ketentuan</a>
+                            <a href="<?php echo base_url('privasi.php'); ?>">Kebijakan Privasi</a>
+                            <a href="<?php echo base_url('sitemap.php'); ?>">Peta Situs</a>
                         </div>
                     </li>
                 </ul>

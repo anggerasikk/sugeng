@@ -105,6 +105,7 @@ include 'header-admin.php';
         <!-- Reservation Trend Chart -->
         <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
             <h3 style="margin-bottom: 20px; color: #001BB7; font-size: 1.2rem;">📈 Tren Reservasi (7 Hari Terakhir)</h3>
+            <p style="margin-bottom: 20px; color: #666; font-size: 0.9rem;">Grafik ini menampilkan jumlah kumulatif reservasi selama 7 hari terakhir.</p>
             <div id="reservationChart" style="height: 300px;"></div>
         </div>
 
@@ -248,13 +249,15 @@ include 'header-admin.php';
 </div>
 
 <script>
-// Reservation Trend Chart (7 days)
+// Reservation Trend Chart (7 days cumulative)
 <?php
 $reservation_data = [];
+$cumulative = 0;
 for ($i = 6; $i >= 0; $i--) {
     $date = date('Y-m-d', strtotime("-{$i} days"));
     $count = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as count FROM bookings WHERE DATE(created_at) = '$date'"))['count'];
-    $reservation_data[] = $count;
+    $cumulative += $count;
+    $reservation_data[] = $cumulative;
 }
 $reservation_labels = [];
 for ($i = 6; $i >= 0; $i--) {
@@ -277,7 +280,7 @@ Highcharts.chart('reservationChart', {
     },
     yAxis: {
         title: {
-            text: 'Jumlah Reservasi'
+            text: 'Jumlah Reservasi Kumulatif'
         },
         gridLineWidth: 1,
         gridLineColor: '#f0f0f0'

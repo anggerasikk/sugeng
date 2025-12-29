@@ -4,6 +4,8 @@ include '../header.php';
 ?>
 
 <div style="max-width: 600px; margin: 80px auto; text-align: center; padding: 0 20px;">
+    <?php display_flash(); ?>
+
     <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
         <div style="background: #F5F1DC; width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 20px; font-size: 30px;">
             🎫

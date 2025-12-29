@@ -233,7 +233,8 @@ $light_cream = "#F5F1DC";
                         <a href="#" class="nav-link">Perjalanan</a>
                         <div class="dropdown-content">
                             <a href="../jadwal.php">Jadwal Perjalanan</a>
-                            <a href="../booking/search-schedule.php">Booking Tiket</a>
+                            <a href="../rute.php">Rute & Destinasi</a>
+                            <a href="../checkin/index.php">Check-in Online</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

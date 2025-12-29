@@ -1,6 +1,5 @@
-# TODO: Make Edit and Delete Buttons Functional on Blog View Page
-
-## Tasks
-- [x] Update edit button in admin/blog/view.php to link to edit.php?id={post_id}
-- [x] Update delete button in admin/blog/view.php to link to delete.php?id={post_id}
-- [x] Test the functionality by accessing the page and clicking the buttons (manual verification completed - code review shows proper implementation)
+- [ ] Add chart container section in user/profile.php after stats grid
+- [ ] Include ApexCharts library script
+- [ ] Add JavaScript to fetch data from user/chart_data.php and render chart
+- [ ] Add CSS styling for the chart section
+- [ ] Test chart display and data fetching
