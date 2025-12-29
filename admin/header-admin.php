@@ -54,8 +54,14 @@ if (!is_admin()) {
 
         .nav-brand h1 {
             color: white;
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .nav-brand h1 span {
+            color: #FF8040;
+            font-size: 24px;
         }
 
         .nav-brand span {
@@ -244,7 +250,7 @@ if (!is_admin()) {
     <!-- Top Navigation Bar -->
     <nav class="top-nav">
         <div class="nav-brand">
-            <h1>🚌 Bus Sugeng Rahayu</h1>
+            <h1>Sugeng <span>Rahayu</span></h1>
             <span>Admin Panel</span>
         </div>
 

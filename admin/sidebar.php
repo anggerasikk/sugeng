@@ -187,6 +187,11 @@
                 <span class="nav-text">Cancellations</span>
             </a>
 
+            <a href="<?php echo base_url('admin/checkin/index.php'); ?>" class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/checkin/') !== false ? 'active' : ''; ?>">
+                <span class="nav-icon">🎫</span>
+                <span class="nav-text">Check-in</span>
+            </a>
+
             <a href="<?php echo base_url('admin/blog/index.php'); ?>" class="nav-link <?php echo strpos($_SERVER['REQUEST_URI'], '/blog/') !== false ? 'active' : ''; ?>">
                 <span class="nav-icon">📝</span>
                 <span class="nav-text">Blog</span>

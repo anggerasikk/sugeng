@@ -1,5 +1,6 @@
 <?php
 require_once '../config.php';
+require_once '../koneksi.php';
 require_once '../includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -60,11 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             exit;
         } else {
-            set_flash('error', 'Password salah!');
-            header("Location: ../beranda/signin.php");
+            // Debug
+            echo "Password salah untuk email: $email";
+            exit;
         }
     } else {
-        set_flash('error', 'Email tidak ditemukan atau akun tidak aktif!');
-        header("Location: ../beranda/signin.php");
+        // Debug
+        echo "Email tidak ditemukan atau akun tidak aktif: $email";
+        exit;
     }
 }

@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form action="" method="POST">
         <div style="margin-bottom: 15px;">
             <label style="display:block; margin-bottom: 5px; font-weight: bold;">Nama Lengkap</label>
-            <input type="text" name="name" value="<?php echo $user['name']; ?>" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 5px;">
+            <input type="text" name="name" value="<?php echo $user['full_name']; ?>" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 5px;">
         </div>
         <div style="margin-bottom: 15px;">
             <label style="display:block; margin-bottom: 5px; font-weight: bold;">Email (Tidak bisa diubah)</label>

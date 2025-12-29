@@ -208,6 +208,9 @@ if (!defined('SMTP_PASS')) define('SMTP_PASS', 'your-app-password');
 
 
 
+// Include additional functions
+require_once 'includes/functions.php';
+
 // Database Connection
 try {
     $koneksi = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -217,7 +220,7 @@ try {
         throw new Exception("Connection failed: " . $koneksi->connect_error);
     }
 } catch (Exception $e) {
-    die("Database connection failed: " . $e->get_message());
+    die("Database connection failed: " . $e->getMessage());
 }
 
 // Global Variables for Templates

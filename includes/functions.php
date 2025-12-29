@@ -737,4 +737,703 @@ if (!function_exists('upload_file')) {
         }
     }
 }
+
+// Sanitize input function
+if (!function_exists('sanitize_input')) {
+    function sanitize_input($input) {
+        global $koneksi;
+        return mysqli_real_escape_string($koneksi, trim($input));
+    }
+}
+
+// Verify CSRF token
+if (!function_exists('verify_csrf_token')) {
+    function verify_csrf_token($token) {
+        return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+    }
+}
+
+// Generate CSRF token
+if (!function_exists('generate_csrf_token')) {
+    function generate_csrf_token() {
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf_token'];
+    }
+}
+
+// CSRF field for forms
+if (!function_exists('csrf_field')) {
+    function csrf_field() {
+        $token = generate_csrf_token();
+        return '<input type="hidden" name="csrf_token" value="' . $token . '">';
+    }
+}
+
+// Set flash message
+if (!function_exists('set_flash')) {
+    function set_flash($type, $message) {
+        $_SESSION['flash'] = ['type' => $type, 'message' => $message];
+    }
+}
+
+// Display flash message
+if (!function_exists('display_flash')) {
+    function display_flash() {
+        if (isset($_SESSION['flash'])) {
+            $flash = $_SESSION['flash'];
+            unset($_SESSION['flash']);
+            return "<div class='alert alert-{$flash['type']}'>{$flash['message']}</div>";
+        }
+        return '';
+    }
+}
+
+// Check if user is logged in
+if (!function_exists('is_logged_in')) {
+    function is_logged_in() {
+        return isset($_SESSION['user_id']);
+    }
+}
+
+// Check if user is admin
+if (!function_exists('is_admin')) {
+    function is_admin() {
+        return isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin';
+    }
+}
+
+// Log activity
+if (!function_exists('log_activity')) {
+    function log_activity($user_id, $action, $details = '') {
+        global $koneksi;
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+        $query = "INSERT INTO activity_logs (user_id, action, description, ip_address, user_agent, created_at) 
+                  VALUES ('$user_id', '$action', '$details', '$ip', '$user_agent', NOW())";
+        mysqli_query($koneksi, $query);
+    }
+}
+
+// Format currency
+if (!function_exists('format_currency')) {
+    function format_currency($amount) {
+        return 'Rp ' . number_format($amount, 0, ',', '.');
+    }
+}
+
+// Format date
+if (!function_exists('format_date')) {
+    function format_date($date) {
+        return date('d/m/Y', strtotime($date));
+    }
+}
+
+// Format datetime
+if (!function_exists('format_datetime')) {
+    function format_datetime($datetime) {
+        return date('d M Y, H:i', strtotime($datetime));
+    }
+}
+
+// Generate unique code
+if (!function_exists('generate_unique_code')) {
+    function generate_unique_code() {
+        return strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
+    }
+}
+
+
+ /**
+ * Get published blog posts for frontend with pagination
+ */
+function get_published_blog_posts($page = 1, $per_page = 9, $category = null, $tag = null, $search = null) {
+    global $koneksi;
+    
+    $where_conditions = ["bp.status = 'published'"];
+    $params = [];
+    $types = "";
+    
+    if (!empty($category)) {
+        $where_conditions[] = "bp.category = ?";
+        $params[] = $category;
+        $types .= "s";
+    }
+    
+    if (!empty($tag)) {
+        $where_conditions[] = "bp.tags LIKE ?";
+        $params[] = "%{$tag}%";
+        $types .= "s";
+    }
+    
+    if (!empty($search)) {
+        $where_conditions[] = "(bp.title LIKE ? OR bp.content LIKE ? OR bp.excerpt LIKE ?)";
+        $search_term = "%{$search}%";
+        $params[] = $search_term;
+        $params[] = $search_term;
+        $params[] = $search_term;
+        $types .= "sss";
+    }
+    
+    $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
+    
+    // Calculate offset
+    $offset = ($page - 1) * $per_page;
+    
+    // Get total count
+    $count_query = "SELECT COUNT(*) as total FROM blog_posts bp $where_clause";
+    if (!empty($params)) {
+        $count_stmt = mysqli_prepare($koneksi, $count_query);
+        mysqli_stmt_bind_param($count_stmt, $types, ...$params);
+        mysqli_stmt_execute($count_stmt);
+        $count_result = mysqli_stmt_get_result($count_stmt);
+        $total_posts = mysqli_fetch_assoc($count_result)['total'];
+    } else {
+        $count_result = mysqli_query($koneksi, $count_query);
+        $total_posts = mysqli_fetch_assoc($count_result)['total'];
+    }
+    
+    // Get posts with pagination
+    $query = "SELECT bp.*, u.full_name as author_name 
+              FROM blog_posts bp
+              LEFT JOIN users u ON bp.author_id = u.id
+              $where_clause
+              ORDER BY bp.published_at DESC, bp.created_at DESC 
+              LIMIT ? OFFSET ?";
+    
+    $params[] = $per_page;
+    $params[] = $offset;
+    $types .= "ii";
+    
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    $posts = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $posts[] = $row;
+    }
+    
+    $total_pages = ceil($total_posts / $per_page);
+    
+    return [
+        'posts' => $posts,
+        'total_posts' => $total_posts,
+        'total_pages' => $total_pages,
+        'current_page' => $page,
+        'per_page' => $per_page
+    ];
+}
+
+/**
+ * Get recent blog posts for sidebar/widget
+ */
+function get_recent_blog_posts($limit = 5) {
+    global $koneksi;
+    
+    $query = "SELECT id, title, slug, thumbnail, published_at, views 
+              FROM blog_posts 
+              WHERE status = 'published' 
+              ORDER BY published_at DESC 
+              LIMIT ?";
+    
+    $stmt = mysqli_prepare($koneksi, $query);
+    $stmt->bind_param("i", $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $posts = [];
+    while ($row = $result->fetch_assoc()) {
+        $posts[] = $row;
+    }
+    
+    return $posts;
+}
+
+/**
+ * Get blog categories with post count
+ */
+function get_blog_categories() {
+    global $koneksi;
+    
+    $query = "SELECT category, COUNT(*) as post_count 
+              FROM blog_posts 
+              WHERE category IS NOT NULL 
+              AND category != '' 
+              AND status = 'published'
+              GROUP BY category 
+              ORDER BY post_count DESC";
+    
+    $result = mysqli_query($koneksi, $query);
+    
+    $categories = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $categories[] = $row;
+    }
+    
+    return $categories;
+}
+
+/**
+ * Get popular blog posts by views
+ */
+function get_popular_blog_posts($limit = 5) {
+    global $koneksi;
+    
+    $query = "SELECT id, title, slug, thumbnail, published_at, views 
+              FROM blog_posts 
+              WHERE status = 'published' 
+              ORDER BY views DESC 
+              LIMIT ?";
+    
+    $stmt = mysqli_prepare($koneksi, $query);
+    $stmt->bind_param("i", $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $posts = [];
+    while ($row = $result->fetch_assoc()) {
+        $posts[] = $row;
+    }
+    
+    return $posts;
+}
+
+/**
+ * Get blog tags cloud
+ */
+function get_blog_tags_cloud($limit = 20) {
+    global $koneksi;
+    
+    $query = "SELECT tags FROM blog_posts 
+              WHERE tags IS NOT NULL 
+              AND tags != '' 
+              AND status = 'published'";
+    
+    $result = mysqli_query($koneksi, $query);
+    
+    $all_tags = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $tags = explode(',', $row['tags']);
+        foreach ($tags as $tag) {
+            $tag = trim($tag);
+            if (!empty($tag)) {
+                $all_tags[$tag] = isset($all_tags[$tag]) ? $all_tags[$tag] + 1 : 1;
+            }
+        }
+    }
+    
+    // Sort by count (descending)
+    arsort($all_tags);
+    
+    // Limit number of tags
+    $all_tags = array_slice($all_tags, 0, $limit, true);
+    
+    return $all_tags;
+}
+
+/**
+ * Create blog post
+ */
+function create_blog_post($data) {
+    global $koneksi;
+    
+    // Generate slug from title
+    $slug = generate_slug($data['title']);
+    
+    // Check if slug already exists
+    $counter = 1;
+    $original_slug = $slug;
+    while (true) {
+        $check_query = "SELECT id FROM blog_posts WHERE slug = ?";
+        $check_stmt = mysqli_prepare($koneksi, $check_query);
+        mysqli_stmt_bind_param($check_stmt, "s", $slug);
+        mysqli_stmt_execute($check_stmt);
+        $check_result = mysqli_stmt_get_result($check_stmt);
+        
+        if (mysqli_num_rows($check_result) == 0) {
+            break;
+        }
+        $slug = $original_slug . '-' . $counter;
+        $counter++;
+    }
+    
+    // Set published_at based on status
+    $published_at = ($data['status'] == 'published') ? date('Y-m-d H:i:s') : null;
+    
+    // Insert query
+    $query = "INSERT INTO blog_posts 
+              (title, slug, excerpt, content, category, tags, thumbnail, 
+               status, published_at, author_id, created_at, updated_at) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+    
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "sssssssssi", 
+        $data['title'], 
+        $slug,
+        $data['excerpt'],
+        $data['content'],
+        $data['category'],
+        $data['tags'],
+        $data['thumbnail'],
+        $data['status'],
+        $published_at,
+        $data['author_id']
+    );
+    
+    if (mysqli_stmt_execute($stmt)) {
+        $post_id = mysqli_insert_id($koneksi);
+        
+        // Log activity
+        log_activity($data['author_id'], 'create_blog_post', 
+                    "Created blog post: {$data['title']} (ID: $post_id)");
+        
+        return ['success' => true, 'post_id' => $post_id, 'slug' => $slug];
+    } else {
+        return ['success' => false, 'error' => mysqli_error($koneksi)];
+    }
+}
+
+/**
+ * Update blog post
+ */
+function update_blog_post($post_id, $data) {
+    global $koneksi;
+    
+    // Get current post
+    $current_query = "SELECT title FROM blog_posts WHERE id = ?";
+    $current_stmt = mysqli_prepare($koneksi, $current_query);
+    mysqli_stmt_bind_param($current_stmt, "i", $post_id);
+    mysqli_stmt_execute($current_stmt);
+    $current_result = mysqli_stmt_get_result($current_stmt);
+    $current_post = mysqli_fetch_assoc($current_result);
+    
+    // Check if title changed - need to update slug
+    $slug = null;
+    if ($current_post['title'] != $data['title']) {
+        $slug = generate_slug($data['title']);
+        
+        // Check if slug already exists (excluding current post)
+        $counter = 1;
+        $original_slug = $slug;
+        while (true) {
+            $check_query = "SELECT id FROM blog_posts WHERE slug = ? AND id != ?";
+            $check_stmt = mysqli_prepare($koneksi, $check_query);
+            mysqli_stmt_bind_param($check_stmt, "si", $slug, $post_id);
+            mysqli_stmt_execute($check_stmt);
+            $check_result = mysqli_stmt_get_result($check_stmt);
+            
+            if (mysqli_num_rows($check_result) == 0) {
+                break;
+            }
+            $slug = $original_slug . '-' . $counter;
+            $counter++;
+        }
+    }
+    
+    // Handle published_at
+    $current_status_query = "SELECT status FROM blog_posts WHERE id = ?";
+    $current_status_stmt = mysqli_prepare($koneksi, $current_status_query);
+    mysqli_stmt_bind_param($current_status_stmt, "i", $post_id);
+    mysqli_stmt_execute($current_status_stmt);
+    $current_status_result = mysqli_stmt_get_result($current_status_stmt);
+    $current_status = mysqli_fetch_assoc($current_status_result)['status'];
+    
+    $published_at = null;
+    if ($data['status'] == 'published' && $current_status != 'published') {
+        $published_at = date('Y-m-d H:i:s');
+    } elseif ($data['status'] == 'published') {
+        // Keep existing published_at
+        $published_at = $data['current_published_at'] ?? null;
+    }
+    
+    // Build update query
+    if ($slug) {
+        $query = "UPDATE blog_posts SET 
+                  title = ?, slug = ?, excerpt = ?, content = ?, category = ?, 
+                  tags = ?, thumbnail = ?, status = ?, published_at = ?, 
+                  updated_at = NOW() 
+                  WHERE id = ?";
+        
+        $stmt = mysqli_prepare($koneksi, $query);
+        mysqli_stmt_bind_param($stmt, "sssssssssi", 
+            $data['title'], 
+            $slug,
+            $data['excerpt'],
+            $data['content'],
+            $data['category'],
+            $data['tags'],
+            $data['thumbnail'],
+            $data['status'],
+            $published_at,
+            $post_id
+        );
+    } else {
+        $query = "UPDATE blog_posts SET 
+                  title = ?, excerpt = ?, content = ?, category = ?, 
+                  tags = ?, thumbnail = ?, status = ?, published_at = ?, 
+                  updated_at = NOW() 
+                  WHERE id = ?";
+        
+        $stmt = mysqli_prepare($koneksi, $query);
+        mysqli_stmt_bind_param($stmt, "ssssssssi", 
+            $data['title'], 
+            $data['excerpt'],
+            $data['content'],
+            $data['category'],
+            $data['tags'],
+            $data['thumbnail'],
+            $data['status'],
+            $published_at,
+            $post_id
+        );
+    }
+    
+    if (mysqli_stmt_execute($stmt)) {
+        // Log activity
+        log_activity($data['author_id'] ?? $_SESSION['user_id'], 'update_blog_post', 
+                    "Updated blog post: {$data['title']} (ID: $post_id)");
+        
+        return ['success' => true, 'slug' => $slug ?? $data['current_slug']];
+    } else {
+        return ['success' => false, 'error' => mysqli_error($koneksi)];
+    }
+}
+
+/**
+ * Delete blog post
+ */
+function delete_blog_post($post_id) {
+    global $koneksi;
+    
+    // Get post details for logging and thumbnail deletion
+    $post_query = "SELECT title, thumbnail FROM blog_posts WHERE id = ?";
+    $post_stmt = mysqli_prepare($koneksi, $post_query);
+    mysqli_stmt_bind_param($post_stmt, "i", $post_id);
+    mysqli_stmt_execute($post_stmt);
+    $post_result = mysqli_stmt_get_result($post_stmt);
+    $post = mysqli_fetch_assoc($post_result);
+    
+    if (!$post) {
+        return ['success' => false, 'error' => 'Post not found'];
+    }
+    
+    // Delete thumbnail file if exists
+    if (!empty($post['thumbnail'])) {
+        $thumbnail_path = '../' . $post['thumbnail'];
+        if (file_exists($thumbnail_path)) {
+            unlink($thumbnail_path);
+        }
+    }
+    
+    // Delete post
+    $delete_query = "DELETE FROM blog_posts WHERE id = ?";
+    $delete_stmt = mysqli_prepare($koneksi, $delete_query);
+    mysqli_stmt_bind_param($delete_stmt, "i", $post_id);
+    
+    if (mysqli_stmt_execute($delete_stmt)) {
+        // Log activity
+        log_activity($_SESSION['user_id'], 'delete_blog_post', 
+                    "Deleted blog post: {$post['title']} (ID: $post_id)");
+        
+        return ['success' => true, 'message' => 'Post deleted successfully'];
+    } else {
+        return ['success' => false, 'error' => mysqli_error($koneksi)];
+    }
+}
+
+/**
+ * Increment blog post views
+ */
+function increment_blog_views($post_id) {
+    global $koneksi;
+    
+    $query = "UPDATE blog_posts SET views = views + 1 WHERE id = ?";
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "i", $post_id);
+    return mysqli_stmt_execute($stmt);
+}
+
+/**
+ * Get blog post by slug (with author info)
+ */
+function get_blog_post_by_slug_with_author($slug) {
+    global $koneksi;
+    
+    $query = "SELECT bp.*, u.full_name as author_name, u.profile_pic as author_avatar
+              FROM blog_posts bp
+              LEFT JOIN users u ON bp.author_id = u.id
+              WHERE bp.slug = ? AND bp.status = 'published'";
+    
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "s", $slug);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    if (mysqli_num_rows($result) > 0) {
+        $post = mysqli_fetch_assoc($result);
+        
+        // Increment views
+        increment_blog_views($post['id']);
+        
+        return $post;
+    }
+    
+    return null;
+}
+
+/**
+ * Get related blog posts
+ */
+function get_related_blog_posts($post_id, $category, $limit = 3) {
+    global $koneksi;
+    
+    $query = "SELECT id, title, slug, excerpt, thumbnail, published_at
+              FROM blog_posts
+              WHERE id != ? AND category = ? AND status = 'published'
+              ORDER BY published_at DESC
+              LIMIT ?";
+    
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "isi", $post_id, $category, $limit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    $posts = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $posts[] = $row;
+    }
+    
+    return $posts;
+}
+
+/**
+ * Search blog posts
+ */
+function search_blog_posts($keyword, $page = 1, $per_page = 10) {
+    global $koneksi;
+    
+    $where_conditions = ["status = 'published'"];
+    $params = [];
+    $types = "";
+    
+    if (!empty($keyword)) {
+        $search_term = "%{$keyword}%";
+        $where_conditions[] = "(title LIKE ? OR content LIKE ? OR excerpt LIKE ? OR tags LIKE ?)";
+        $params[] = $search_term;
+        $params[] = $search_term;
+        $params[] = $search_term;
+        $params[] = $search_term;
+        $types .= "ssss";
+    }
+    
+    $where_clause = implode(" AND ", $where_conditions);
+    
+    // Calculate offset
+    $offset = ($page - 1) * $per_page;
+    
+    // Get total count
+    $count_query = "SELECT COUNT(*) as total FROM blog_posts WHERE $where_clause";
+    $count_stmt = mysqli_prepare($koneksi, $count_query);
+    if (!empty($params)) {
+        mysqli_stmt_bind_param($count_stmt, $types, ...$params);
+    }
+    mysqli_stmt_execute($count_stmt);
+    $count_result = mysqli_stmt_get_result($count_stmt);
+    $total_posts = mysqli_fetch_assoc($count_result)['total'];
+    
+    // Get search results
+    $query = "SELECT id, title, slug, excerpt, thumbnail, category, published_at, views
+              FROM blog_posts 
+              WHERE $where_clause
+              ORDER BY published_at DESC
+              LIMIT ? OFFSET ?";
+    
+    $params[] = $per_page;
+    $params[] = $offset;
+    $types .= "ii";
+    
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    $posts = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $posts[] = $row;
+    }
+    
+    $total_pages = ceil($total_posts / $per_page);
+    
+    return [
+        'posts' => $posts,
+        'total_posts' => $total_posts,
+        'total_pages' => $total_pages,
+        'current_page' => $page,
+        'keyword' => $keyword
+    ];
+}
+
+/**
+ * Get blog statistics for admin dashboard
+ */
+function get_blog_statistics() {
+    global $koneksi;
+    
+    $stats = [];
+    
+    // Total posts
+    $total_query = "SELECT COUNT(*) as total FROM blog_posts";
+    $total_result = mysqli_query($koneksi, $total_query);
+    $stats['total_posts'] = mysqli_fetch_assoc($total_result)['total'];
+    
+    // Published posts
+    $published_query = "SELECT COUNT(*) as total FROM blog_posts WHERE status = 'published'";
+    $published_result = mysqli_query($koneksi, $published_query);
+    $stats['published_posts'] = mysqli_fetch_assoc($published_result)['total'];
+    
+    // Draft posts
+    $draft_query = "SELECT COUNT(*) as total FROM blog_posts WHERE status = 'draft'";
+    $draft_result = mysqli_query($koneksi, $draft_query);
+    $stats['draft_posts'] = mysqli_fetch_assoc($draft_result)['total'];
+    
+    // Total views
+    $views_query = "SELECT SUM(views) as total FROM blog_posts";
+    $views_result = mysqli_query($koneksi, $views_query);
+    $stats['total_views'] = mysqli_fetch_assoc($views_result)['total'] ?? 0;
+    
+    // Most viewed post
+    $most_viewed_query = "SELECT title, views FROM blog_posts ORDER BY views DESC LIMIT 1";
+    $most_viewed_result = mysqli_query($koneksi, $most_viewed_query);
+    $stats['most_viewed'] = mysqli_fetch_assoc($most_viewed_result);
+    
+    // Recent activity
+    $recent_query = "SELECT COUNT(*) as total FROM blog_posts 
+                     WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+    $recent_result = mysqli_query($koneksi, $recent_query);
+    $stats['recent_posts'] = mysqli_fetch_assoc($recent_result)['total'];
+    
+    return $stats;
+}
+
+/**
+ * Generate blog post excerpt from content
+ */
+function generate_excerpt($content, $length = 200) {
+    // Remove HTML tags
+    $excerpt = strip_tags($content);
+    
+    // Trim to desired length
+    if (strlen($excerpt) > $length) {
+        $excerpt = substr($excerpt, 0, $length);
+        $excerpt = substr($excerpt, 0, strrpos($excerpt, ' ')) . '...';
+    }
+    
+    return $excerpt;
+}
+
+// ... (akhir file)
+
 ?>

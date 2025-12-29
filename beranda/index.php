@@ -34,11 +34,18 @@ $blog_posts = get_blog_posts(null, 3);
 
     /* Hero Section with Search Form */
     .hero-section {
-        background: linear-gradient(135deg, <?php echo $primary_blue; ?>, <?php echo $secondary_blue; ?>);
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0.5)), url('../assets/images/hero-bus.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
         color: <?php echo $light_cream; ?>;
         padding: 80px 0 60px;
         position: relative;
         overflow: hidden;
+    }
+
+    .hero-content {
+        position: relative;
     }
 
     .hero-content {
@@ -67,6 +74,8 @@ $blog_posts = get_blog_posts(null, 3);
         padding: 30px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         margin-top: 30px;
+        position: relative;
+        z-index: 3;
     }
 
     .search-form-title {
@@ -298,7 +307,7 @@ $blog_posts = get_blog_posts(null, 3);
         opacity: 0.9;
     }
 
-    /* Latest News Section */
+    /* Latest News Section - PERUBAHAN DI SINI */
     .news-section {
         padding: 80px 0;
         background: <?php echo $light_cream; ?>;
@@ -311,17 +320,38 @@ $blog_posts = get_blog_posts(null, 3);
         margin-top: 40px;
     }
 
+    /* Link untuk card berita */
+    .news-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .news-card-link:hover {
+        text-decoration: none;
+    }
+
     .news-card {
         background: white;
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
+        height: 100%;
+        cursor: pointer;
+        border: 2px solid transparent;
     }
 
-    .news-card:hover {
+    .news-card-link:hover .news-card {
         transform: translateY(-10px);
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        border-color: <?php echo $accent_orange; ?>;
+    }
+
+    .news-card-link:hover .news-content h3 {
+        color: <?php echo $accent_orange; ?>;
     }
 
     .news-image {
@@ -352,6 +382,24 @@ $blog_posts = get_blog_posts(null, 3);
 
     .news-content {
         padding: 25px;
+        position: relative;
+    }
+
+    .news-content::after {
+        content: '→';
+        position: absolute;
+        bottom: 20px;
+        right: 25px;
+        color: <?php echo $primary_blue; ?>;
+        font-size: 1.2rem;
+        opacity: 0;
+        transition: all 0.3s ease;
+        transform: translateX(-10px);
+    }
+
+    .news-card-link:hover .news-content::after {
+        opacity: 1;
+        transform: translateX(0);
     }
 
     .news-content h3 {
@@ -359,6 +407,7 @@ $blog_posts = get_blog_posts(null, 3);
         margin-bottom: 15px;
         font-size: 1.3rem;
         line-height: 1.4;
+        transition: color 0.3s ease;
     }
 
     .news-content p {
@@ -425,6 +474,20 @@ $blog_posts = get_blog_posts(null, 3);
     .destination-card p {
         color: #666;
         font-size: 0.9rem;
+    }
+
+    /* Chart Section */
+    .chart-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .chart-container {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        margin-top: 40px;
     }
 
     /* Responsive Design */
@@ -547,43 +610,47 @@ $blog_posts = get_blog_posts(null, 3);
 <section class="hero-section">
     <div class="container">
         <div class="hero-content">
-            <h1>Keramahan Awak Bus</h1>
-            <p>Awak Bus Sugeng Rahayu selalu melayani Anda dengan sepenuh hati dan profesionalisme.</p>
+            <h1>SUGENG RAHAYU</h1>
+            <p>Bus Sugeng Rahayu selalu melayani Anda dengan sepenuh hati dan profesionalisme.</p>
         </div>
 
         <!-- Search Form based on first image -->
         <div class="search-form-container">
             <h3 class="search-form-title">Cari Tiket Bus</h3>
-            <form class="search-form">
+            <!-- Ganti action dengan path yang benar -->
+            <form class="search-form" method="GET" action="../jadwal.php">
                 <!-- Row 1: Asal, Tujuan, Tanggal Pergi -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="origin">Asal</label>
-                        <select class="form-select" id="origin" required>
+                        <select class="form-select" id="origin" name="origin" required>
                             <option value="">Pilih Asal</option>
-                            <option value="jakarta">Jakarta</option>
-                            <option value="bandung">Bandung</option>
-                            <option value="surabaya">Surabaya</option>
-                            <option value="yogyakarta">Yogyakarta</option>
-                            <option value="semarang">Semarang</option>
+                            <option value="Jakarta">Jakarta</option>
+                            <option value="Bandung">Bandung</option>
+                            <option value="Yogyakarta">Yogyakarta</option>
+                            <option value="Surabaya">Surabaya</option>
+                            <option value="Semarang">Semarang</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="destination">Tujuan</label>
-                        <select class="form-select" id="destination" required>
+                        <select class="form-select" id="destination" name="destination" required>
                             <option value="">Pilih Tujuan</option>
-                            <option value="bali">Bali</option>
-                            <option value="malang">Malang</option>
-                            <option value="solo">Solo</option>
-                            <option value="medan">Medan</option>
-                            <option value="palembang">Palembang</option>
+                            <option value="Jakarta">Jakarta</option>
+                            <option value="Bandung">Bandung</option>
+                            <option value="Yogyakarta">Yogyakarta</option>
+                            <option value="Surabaya">Surabaya</option>
+                            <option value="Bali">Bali</option>
+                            <option value="Semarang">Semarang</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="departure-date">Tanggal Pergi</label>
-                        <input type="date" class="form-input" id="departure-date" required>
+                        <label for="date">Tanggal Pergi</label>
+                        <input type="date" class="form-input" id="date" name="date" required 
+                               min="<?php echo date('Y-m-d'); ?>" 
+                               value="<?php echo date('Y-m-d'); ?>">
                     </div>
                 </div>
 
@@ -591,18 +658,18 @@ $blog_posts = get_blog_posts(null, 3);
                 <div class="form-row">
                     <div class="form-group">
                         <label for="class">Kelas Armada</label>
-                        <select class="form-select" id="class">
+                        <select class="form-select" id="class" name="class">
                             <option value="">Semua Kelas Armada</option>
-                            <option value="ekonomi">Ekonomi</option>
-                            <option value="bisnis">Bisnis</option>
-                            <option value="executive">Executive</option>
-                            <option value="premium">Premium</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Executive">Executive</option>
+                            <option value="VIP">VIP</option>
+                            <option value="Regular">Regular</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="passengers">Jumlah Penumpang</label>
-                        <select class="form-select" id="passengers">
+                        <select class="form-select" id="passengers" name="passengers">
                             <option value="1">1 Penumpang</option>
                             <option value="2">2 Penumpang</option>
                             <option value="3">3 Penumpang</option>
@@ -620,7 +687,6 @@ $blog_posts = get_blog_posts(null, 3);
         </div>
     </div>
 </section>
-
 <!-- Promotion Section -->
 <section class="promotion-section">
     <div class="container">
@@ -635,9 +701,9 @@ $blog_posts = get_blog_posts(null, 3);
             </div>
             <div class="promotion-content">
                 <h2>Nikmati Perjalanan Nyaman dengan Harga Terjangkau</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <a href="#" class="promo-button">Lihat Promo Lainnya</a>
+                <p>Dapatkan diskon spesial 50% untuk semua tiket bus pada hari ulang tahun membership Anda.</p>
+                <p>Manfaatkan momen spesial ini untuk menjelajahi destinasi impian dengan perjalanan yang lebih hemat dan nyaman.</p>
+                <a href="../promo.php" class="promo-button">Lihat Promo Lainnya</a>
             </div>
         </div>
     </div>
@@ -703,47 +769,136 @@ $blog_posts = get_blog_posts(null, 3);
     </div>
 </section>
 
-<!-- Latest News Section -->
+
+
+<!-- Latest News Section - INTEGRASI DENGAN BLOG -->
 <section class="news-section">
     <div class="container">
         <h2 class="section-title">Berita Terbaru</h2>
         <div class="news-grid">
-            <div class="news-card">
-                <div class="news-image">
-                    <div class="icon">🚌</div>
-                </div>
-                <div class="news-content">
-                    <h3>Sistem Booking Online Terbaru dengan Fitur Real-Time Tracking</h3>
-                    <p>Nikmati kemudahan booking tiket online dengan fitur tracking perjalanan secara real-time.</p>
-                    <div class="news-date">📅 27 November 2025</div>
-                </div>
-            </div>
+            <?php
+            // Get published blog posts from database (limit 3)
+            $blog_query = "SELECT * FROM blog_posts 
+                          WHERE status = 'published' 
+                          AND (published_at <= NOW() OR published_at IS NULL)
+                          ORDER BY published_at DESC, created_at DESC 
+                          LIMIT 3";
+            $blog_result = mysqli_query($koneksi, $blog_query);
+            
+            if (mysqli_num_rows($blog_result) > 0) {
+                while ($post = mysqli_fetch_assoc($blog_result)) {
+                    // Determine icon based on category
+                    $icon = '📰'; // Default icon
+                    $category = strtolower($post['category'] ?? '');
+                    
+                    if (strpos($category, 'teknologi') !== false || strpos($category, 'technology') !== false || strpos($category, 'sistem') !== false) {
+                        $icon = '🚌';
+                    } elseif (strpos($category, 'lingkungan') !== false || strpos($category, 'environment') !== false || strpos($category, 'hijau') !== false) {
+                        $icon = '🌱';
+                    } elseif (strpos($category, 'rute') !== false || strpos($category, 'route') !== false || strpos($category, 'perjalanan') !== false) {
+                        $icon = '🎯';
+                    } elseif (strpos($category, 'promo') !== false || strpos($category, 'diskon') !== false) {
+                        $icon = '🎉';
+                    } elseif (strpos($category, 'update') !== false || strpos($category, 'pembaruan') !== false) {
+                        $icon = '🔄';
+                    }
+                    
+                    // Format date
+                    $date = $post['published_at'] ? format_date($post['published_at']) : format_date($post['created_at']);
+                    
+                    // Truncate excerpt
+                    $excerpt = $post['excerpt'] ?? substr(strip_tags($post['content']), 0, 120);
+                    if (strlen($excerpt) > 120) {
+                        $excerpt = substr($excerpt, 0, 117) . '...';
+                    }
+                    ?>
+                    <a href="blog-detail.php?slug=<?php echo urlencode($post['slug']); ?>" class="news-card-link">
+                        <div class="news-card">
+                            <div class="news-image">
+                                <?php if (!empty($post['thumbnail'])): ?>
+                                    <?php
+                                    $thumbnail_path = strpos($post['thumbnail'], 'http') === 0 ? $post['thumbnail'] : '../' . $post['thumbnail'];
+                                    ?>
+                                    <img src="<?php echo htmlspecialchars($thumbnail_path); ?>" 
+                                         alt="<?php echo htmlspecialchars($post['title']); ?>"
+                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                <?php else: ?>
+                                    <div class="icon"><?php echo $icon; ?></div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="news-content">
+                                <h3><?php echo htmlspecialchars($post['title']); ?></h3>
+                                <p><?php echo htmlspecialchars($excerpt); ?></p>
+                                <div class="news-date">
+                                    📅 <?php echo $date; ?>
+                                    <?php if (!empty($post['category'])): ?>
+                                        <span style="margin-left: 10px; background: <?php echo $primary_blue; ?>; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">
+                                            <?php echo htmlspecialchars($post['category']); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <?php
+                }
+            } else {
+                // Fallback to static content if no blog posts
+                ?>
+                <!-- Berita 1 - Static fallback -->
+                <a href="blog-detail.php?slug=sistem-booking-online-terbaru" class="news-card-link">
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="icon">🚌</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>Sistem Booking Online Terbaru dengan Fitur Real-Time Tracking</h3>
+                            <p>Nikmati kemudahan booking tiket online dengan fitur tracking perjalanan secara real-time.</p>
+                            <div class="news-date">📅 27 November 2025</div>
+                        </div>
+                    </div>
+                </a>
 
-            <div class="news-card">
-                <div class="news-image">
-                    <div class="icon">🌱</div>
-                </div>
-                <div class="news-content">
-                    <h3>Komitmen Kurangi Emisi dengan Bus Ramah Lingkungan</h3>
-                    <p>Kami berkomitmen menggunakan teknologi ramah lingkungan untuk masa depan yang lebih baik.</p>
-                    <div class="news-date">📅 18 November 2025</div>
-                </div>
-            </div>
+                <!-- Berita 2 - Static fallback -->
+                <a href="blog-detail.php?slug=komitmen-kurangi-emisi-dengan-bus-ramah-lingkungan" class="news-card-link">
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="icon">🌱</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>Komitmen Kurangi Emisi dengan Bus Ramah Lingkungan</h3>
+                            <p>Kami berkomitmen menggunakan teknologi ramah lingkungan untuk masa depan yang lebih baik.</p>
+                            <div class="news-date">📅 18 November 2025</div>
+                        </div>
+                    </div>
+                </a>
 
-            <div class="news-card">
-                <div class="news-image">
-                    <div class="icon">🎯</div>
-                </div>
-                <div class="news-content">
-                    <h3>Rute Baru Jawa-Bali dengan Fasilitas Premium</h3>
-                    <p>Temukan kenyamanan baru dengan rute terbaru dan fasilitas premium yang kami tawarkan.</p>
-                    <div class="news-date">📅 10 November 2025</div>
-                </div>
-            </div>
+                <!-- Berita 3 - Static fallback -->
+                <a href="blog-detail.php?slug=rute-baru-jawa-bali-dengan-fasilitas-premium" class="news-card-link">
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="icon">🎯</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>Rute Baru Jawa-Bali dengan Fasilitas Premium</h3>
+                            <p>Temukan kenyamanan baru dengan rute terbaru dan fasilitas premium yang kami tawarkan.</p>
+                            <div class="news-date">📅 10 November 2025</div>
+                        </div>
+                    </div>
+                </a>
+                <?php
+            }
+            ?>
+        </div>
+        
+        <!-- Link to all blog posts -->
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="blog.php" class="promo-button" style="display: inline-block;">
+                📰 Lihat Semua Berita →
+            </a>
         </div>
     </div>
 </section>
-
 <!-- Destinations Section -->
 <section class="destinations-section">
     <div class="container">
@@ -775,5 +930,106 @@ $blog_posts = get_blog_posts(null, 3);
         </div>
     </div>
 </section>
+
+<!-- Chart JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch chart data from the API
+    fetch('../check_chart_data.php')
+        .then(response => response.json())
+        .then(data => {
+            // Prepare data for ApexCharts
+            const options = {
+                series: [{
+                    name: 'Reservasi',
+                    data: data.reservations
+                }, {
+                    name: 'Pembatalan',
+                    data: data.cancellations
+                }],
+                chart: {
+                    type: 'line',
+                    height: 400,
+                    toolbar: {
+                        show: true
+                    }
+                },
+                colors: ['#007bff', '#dc3545'],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 3
+                },
+                title: {
+                    text: 'Reservasi vs Pembatalan Tiket (7 Hari Terakhir)',
+                    align: 'center',
+                    style: {
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        color: '#333'
+                    }
+                },
+                grid: {
+                    borderColor: '#e7e7e7',
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'],
+                        opacity: 0.5
+                    }
+                },
+                markers: {
+                    size: 5,
+                    colors: ['#007bff', '#dc3545'],
+                    strokeColors: '#fff',
+                    strokeWidth: 2,
+                    hover: {
+                        size: 7
+                    }
+                },
+                xaxis: {
+                    categories: data.dates,
+                    title: {
+                        text: 'Tanggal'
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Jumlah'
+                    },
+                    min: 0
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'right',
+                    floating: true,
+                    offsetY: -25,
+                    offsetX: -5
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function (val) {
+                            return val + " tiket"
+                        }
+                    }
+                }
+            };
+
+            const chart = new ApexCharts(document.querySelector("#reservationCancellationChart"), options);
+            chart.render();
+        })
+        .catch(error => {
+            console.error('Error fetching chart data:', error);
+            document.querySelector("#reservationCancellationChart").innerHTML =
+                '<div style="text-align: center; padding: 50px; color: #666;">' +
+                '<p>⚠️ Gagal memuat data grafik</p>' +
+                '<p>Silakan coba lagi nanti</p>' +
+                '</div>';
+        });
+});
+</script>
 
 <?php include 'footer.php'; ?>

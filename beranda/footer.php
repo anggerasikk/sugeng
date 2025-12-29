@@ -17,20 +17,7 @@ $light_cream = "#F5F1DC";
                     Penyedia layanan transportasi bus terpercaya dengan pengalaman lebih dari 10 tahun. 
                     Melayani perjalanan antar kota dengan nyaman, aman, dan terjangkau.
                 </p>
-                <div style="display: flex; gap: 15px;">
-                    <a href="#" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">
-                        <i>FB</i>
-                    </a>
-                    <a href="#" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">
-                        <i>IG</i>
-                    </a>
-                    <a href="#" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">
-                        <i>TW</i>
-                    </a>
-                    <a href="#" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">
-                        <i>YT</i>
-                    </a>
-                </div>
+                
             </div>
 
             <!-- Quick Links -->
@@ -39,7 +26,7 @@ $light_cream = "#F5F1DC";
                 <ul style="list-style: none; line-height: 2.5;">
                     <li><a href="index.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Beranda</a></li>
                     <li><a href="jadwal.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Jadwal Perjalanan</a></li>
-                    <li><a href="booking.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Booking Tiket</a></li>
+                    <li><a href="jadwal.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Booking Tiket</a></li>
                     <li><a href="promo.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Promo & Diskon</a></li>
                     <li><a href="tentang.php" style="color: <?php echo $light_cream; ?>; text-decoration: none; transition: color 0.3s ease;">Tentang Kami</a></li>
                 </ul>

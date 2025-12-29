@@ -9,6 +9,7 @@ include '../header.php';
         <p style="color: #666; margin-bottom: 30px;">Sesuai kebijakan SRS, dana akan dikembalikan maksimal 75% setelah disetujui Admin.</p>
         
         <form action="submit.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
             <div style="margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: bold;">Kode Booking</label>
                 <input type="text" name="booking_code" placeholder="SR-XXXXX" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px;" required>

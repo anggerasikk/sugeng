@@ -1,5 +1,6 @@
 <?php
 require_once '../config.php';
+require_once '../koneksi.php';
 require_once '../includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -53,12 +54,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    // Generate unique username from fullname
+    $base_username = strtolower(str_replace(' ', '_', $fullname));
+    $username = $base_username;
+    $counter = 1;
+    while (mysqli_num_rows(mysqli_query($koneksi, "SELECT id FROM users WHERE username = '$username'")) > 0) {
+        $username = $base_username . '_' . $counter;
+        $counter++;
+    }
+
     // Hash Password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert into Database
-    $query = "INSERT INTO users (full_name, email, password, role, status, created_at)
-              VALUES ('$fullname', '$email', '$hashed_password', 'user', 'active', NOW())";
+    $query = "INSERT INTO users (username, full_name, email, password, role, status, created_at)
+              VALUES ('$username', '$fullname', '$email', '$hashed_password', 'user', 'active', NOW())";
 
     if (mysqli_query($koneksi, $query)) {
         // Log activity
@@ -68,7 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         set_flash('success', 'Registrasi berhasil! Silakan login.');
         header("Location: ../beranda/signin.php");
     } else {
-        set_flash('error', 'Terjadi kesalahan sistem.');
-        header("Location: ../beranda/signup.php");
+        // Debug: echo error
+        echo "Database Error: " . mysqli_error($koneksi);
+        exit;
     }
 }

@@ -202,7 +202,7 @@ include 'header.php';
     <div class="promo-banner">
         <h2>🔥 FLASH SALE - Diskon 40%!</h2>
         <p>Promo terbatas untuk 100 pemesan pertama hari ini. Booking sekarang dan hemat biaya perjalanan Anda!</p>
-        <a href="booking/index.php" class="btn-promo">Pesan Sekarang →</a>
+        <a href="jadwal.php" class="btn-promo">Pesan Sekarang →</a>
     </div>
 
     <!-- Promo Grid -->
@@ -215,7 +215,7 @@ include 'header.php';
                 <p class="promo-description">Pesan tiket minimal 7 hari sebelum keberangkatan dan dapatkan diskon hingga 25%!</p>
                 <div class="promo-discount">25% OFF</div>
                 <div class="promo-validity">Berlaku untuk semua rute • S&K berlaku</div>
-                <a href="booking/index.php" class="btn-promo">Booking Sekarang</a>
+                <a href="jadwal.php" class="btn-promo">Booking Sekarang</a>
             </div>
         </div>
 
@@ -227,7 +227,7 @@ include 'header.php';
                 <p class="promo-description">Diskon spesial untuk keluarga (minimal 4 orang). Hemat hingga 30% untuk perjalanan bersama!</p>
                 <div class="promo-discount">30% OFF</div>
                 <div class="promo-validity">Minimal 4 orang • Berlaku weekday</div>
-                <a href="booking/index.php" class="btn-promo">Lihat Detail</a>
+                <a href="jadwal.php" class="btn-promo">Lihat Detail</a>
             </div>
         </div>
 
@@ -239,7 +239,7 @@ include 'header.php';
                 <p class="promo-description">Diskon khusus mahasiswa dengan menunjukkan KTM/KRS yang masih berlaku.</p>
                 <div class="promo-discount">20% OFF</div>
                 <div class="promo-validity">Dengan KTM aktif • Semua rute</div>
-                <a href="booking/index.php" class="btn-promo">Pesan Tiket</a>
+                <a href="jadwal.php" class="btn-promo">Pesan Tiket</a>
             </div>
         </div>
 
@@ -263,7 +263,7 @@ include 'header.php';
                 <p class="promo-description">Diskon spesial untuk perjalanan malam hari (keberangkatan setelah jam 22:00).</p>
                 <div class="promo-discount">15% OFF</div>
                 <div class="promo-validity">Keberangkatan 22:00-05:00 • All routes</div>
-                <a href="booking/index.php" class="btn-promo">Cek Jadwal</a>
+                <a href="jadwal.php" class="btn-promo">Cek Jadwal</a>
             </div>
         </div>
 
@@ -275,7 +275,7 @@ include 'header.php';
                 <p class="promo-description">Hemat lebih banyak dengan paket pulang pergi. Diskon hingga 40% untuk rute PP!</p>
                 <div class="promo-discount">40% OFF</div>
                 <div class="promo-validity">Pulang pergi • Berlaku 30 hari</div>
-                <a href="booking/index.php" class="btn-promo">Booking PP</a>
+                <a href="jadwal.php" class="btn-promo">Booking PP</a>
             </div>
         </div>
     </div>
@@ -284,7 +284,7 @@ include 'header.php';
     <div class="promo-banner">
         <h2>🚀 Jangan Lewatkan Kesempatan Ini!</h2>
         <p>Promo bisa berubah sewaktu-waktu. Segera booking tiket Anda dan nikmati perjalanan nyaman dengan Sugeng Rahayu!</p>
-        <a href="booking/index.php" class="btn-promo">Mulai Booking Tiket →</a>
+        <a href="jadwal.php" class="btn-promo">Mulai Booking Tiket →</a>
     </div>
 </div>
 

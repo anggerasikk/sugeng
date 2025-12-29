@@ -1,5 +1,6 @@
 <?php
-require_once '../konfigurasi tambahan/config.php';
+require_once '../config.php';
+require_once '../includes/functions.php';
 
 // Redirect if already logged in
 if (is_logged_in()) {

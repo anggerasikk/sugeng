@@ -33,7 +33,7 @@ include '../header-admin.php';
         margin: 0;
     }
 
-         .btn-add {
+    .btn-add {
         background: <?php echo $accent_orange; ?>;
         color: white;
         padding: 10px 20px;
@@ -315,19 +315,19 @@ include '../header-admin.php';
             <div class="filters-grid">
                 <div class="filter-group">
                     <label for="search">Cari Rute</label>
-                    <input type="text" id="search" name="search" value="<?php echo $_GET['search'] ?? ''; ?>" placeholder="Asal atau tujuan...">
+                    <input type="text" id="search" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" placeholder="Asal atau tujuan...">
                 </div>
                 <div class="filter-group">
                     <label for="status">Status</label>
                     <select id="status" name="status">
                         <option value="">Semua Status</option>
-                        <option value="active" <?php echo ($_GET['status'] ?? '') === 'active' ? 'selected' : ''; ?>>Aktif</option>
-                        <option value="cancelled" <?php echo ($_GET['status'] ?? '') === 'cancelled' ? 'selected' : ''; ?>>Tidak Aktif</option>
+                        <option value="active" <?php echo (isset($_GET['status']) && $_GET['status'] === 'active') ? 'selected' : ''; ?>>Aktif</option>
+                        <option value="cancelled" <?php echo (isset($_GET['status']) && $_GET['status'] === 'cancelled') ? 'selected' : ''; ?>>Tidak Aktif</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <label for="date">Tanggal Operasional</label>
-                    <input type="date" id="date" name="date" value="<?php echo $_GET['date'] ?? ''; ?>">
+                    <input type="date" id="date" name="date" value="<?php echo isset($_GET['date']) ? htmlspecialchars($_GET['date']) : ''; ?>">
                 </div>
                 <div class="filter-group">
                     <button type="submit" class="btn-filter">🔍 Filter</button>
@@ -390,7 +390,7 @@ include '../header-admin.php';
                     $offset = ($page - 1) * $per_page;
 
                     // Count total records
-                    $count_query = "SELECT COUNT(*) as total FROM schedules s LEFT JOIN routes r ON s.route_id = r.id LEFT JOIN bus_types bt ON s.bus_type_id = bt.id $where_clause";
+                    $count_query = "SELECT COUNT(*) as total FROM schedules s $where_clause";
                     if (!empty($params)) {
                         $count_stmt = mysqli_prepare($koneksi, $count_query);
                         mysqli_stmt_bind_param($count_stmt, $types, ...$params);
@@ -403,8 +403,8 @@ include '../header-admin.php';
                     }
                     $total_pages = ceil($total_records / $per_page);
 
-                    // Main query
-                    $query = "SELECT s.*, r.origin, r.destination, bt.name as bus_type_name, bt.capacity
+                    // Main query - PERUBAHAN: Sesuaikan dengan struktur database
+                    $query = "SELECT s.*, r.origin, r.destination, bt.name as bus_type_name, bt.capacity 
                              FROM schedules s
                              LEFT JOIN routes r ON s.route_id = r.id
                              LEFT JOIN bus_types bt ON s.bus_type_id = bt.id
@@ -413,10 +413,19 @@ include '../header-admin.php';
                              LIMIT ? OFFSET ?";
 
                     $stmt = mysqli_prepare($koneksi, $query);
-                    $params[] = $per_page;
-                    $params[] = $offset;
-                    $types .= "ii";
-                    mysqli_stmt_bind_param($stmt, $types, ...$params);
+                    
+                    // Tambahkan parameter untuk LIMIT dan OFFSET jika ada
+                    if (!empty($params)) {
+                        $params[] = $per_page;
+                        $params[] = $offset;
+                        $types .= "ii";
+                        mysqli_stmt_bind_param($stmt, $types, ...$params);
+                    } else {
+                        $types = "ii";
+                        $limit_params = [$per_page, $offset];
+                        mysqli_stmt_bind_param($stmt, $types, ...$limit_params);
+                    }
+                    
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
 
@@ -429,18 +438,56 @@ include '../header-admin.php';
                             mysqli_stmt_execute($booked_stmt);
                             $booked_result = mysqli_stmt_get_result($booked_stmt);
                             $booked = mysqli_fetch_assoc($booked_result)['booked'];
-                            $available = $schedule['capacity'] - $booked;
+                            
+                            // Gunakan total_seats dari tabel schedules jika ada, jika tidak gunakan capacity dari bus_types, default 50
+                            $total_seats = isset($schedule['total_seats']) && $schedule['total_seats'] > 0 ? $schedule['total_seats'] : ($schedule['capacity'] ?? 50);
+                            $available = $total_seats - $booked;
 
                             $status_class = 'status-' . $schedule['status'];
                             ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($schedule['origin'] . ' → ' . $schedule['destination']); ?></td>
+                                <td><?php echo htmlspecialchars($schedule['origin'] ?? '') . ' → ' . htmlspecialchars($schedule['destination'] ?? ''); ?></td>
                                 <td><?php echo format_date($schedule['departure_date']); ?></td>
-                                <td><?php echo format_time($schedule['departure_time']); ?> - <?php echo format_time($schedule['arrival_time']); ?></td>
-                                <td><?php echo htmlspecialchars($schedule['bus_type_name']); ?></td>
+                                <td>
+                                    <?php echo format_time($schedule['departure_time']); ?> 
+                                    <?php if (!empty($schedule['arrival_time'])): ?>
+                                        - <?php echo format_time($schedule['arrival_time']); ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php 
+                                    $bus_type = $schedule['bus_type_name'] ?? '';
+                                    echo htmlspecialchars($bus_type);
+                                    if (!empty($schedule['bus_number'])) {
+                                        echo ' (' . htmlspecialchars($schedule['bus_number'] ?? '') . ')';
+                                    }
+                                    ?>
+                                </td>
                                 <td><?php echo format_currency($schedule['price']); ?></td>
-                                <td><?php echo $available; ?>/<?php echo $schedule['capacity']; ?></td>
-                                <td><span class="status-badge <?php echo $status_class; ?>"><?php echo ucfirst($schedule['status']); ?></span></td>
+                                <td>
+                                    <?php echo $available; ?>/<?php echo $total_seats; ?>
+                                    <?php if ($available <= 10): ?>
+                                        <span style="color: #dc3545; font-size: 0.8rem; margin-left: 5px;">
+                                            <?php echo $available <= 5 ? '⚠️ Hampir Habis' : '🟡 Sedikit'; ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <span class="status-badge <?php echo $status_class; ?>">
+                                        <?php 
+                                        $status_text = $schedule['status'] ?? '';
+                                        if ($status_text == 'active') {
+                                            echo 'Aktif';
+                                        } elseif ($status_text == 'cancelled') {
+                                            echo 'Dibatalkan';
+                                        } elseif ($status_text == 'completed') {
+                                            echo 'Selesai';
+                                        } else {
+                                            echo ucfirst($status_text);
+                                        }
+                                        ?>
+                                    </span>
+                                </td>
                                 <td>
                                     <div class="action-buttons">
                                         <a href="edit.php?id=<?php echo $schedule['id']; ?>" class="btn-action btn-edit">✏️ Edit</a>
@@ -456,6 +503,11 @@ include '../header-admin.php';
                         <tr>
                             <td colspan="8" style="text-align: center; padding: 40px;">
                                 <p style="color: #666; margin: 0;">Tidak ada data jadwal ditemukan</p>
+                                <?php if (!empty($where_clause)): ?>
+                                    <p style="color: #999; font-size: 0.9rem; margin-top: 10px;">
+                                        Coba dengan filter yang berbeda atau <a href="index.php">reset filter</a>
+                                    </p>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php
@@ -472,11 +524,29 @@ include '../header-admin.php';
                 $query_string = $_GET;
                 unset($query_string['page']);
 
-                for ($i = 1; $i <= $total_pages; $i++) {
+                // Previous button
+                if ($page > 1) {
+                    $query_string['page'] = $page - 1;
+                    $prev_url = '?' . http_build_query($query_string);
+                    echo "<a href='$prev_url' class='page-link'>← Sebelumnya</a>";
+                }
+
+                // Page numbers
+                $start_page = max(1, $page - 2);
+                $end_page = min($total_pages, $page + 2);
+                
+                for ($i = $start_page; $i <= $end_page; $i++) {
                     $query_string['page'] = $i;
                     $url = '?' . http_build_query($query_string);
                     $active_class = $i === $page ? 'active' : '';
                     echo "<a href='$url' class='page-link $active_class'>$i</a>";
+                }
+
+                // Next button
+                if ($page < $total_pages) {
+                    $query_string['page'] = $page + 1;
+                    $next_url = '?' . http_build_query($query_string);
+                    echo "<a href='$next_url' class='page-link'>Selanjutnya →</a>";
                 }
                 ?>
             </div>
@@ -490,6 +560,11 @@ document.querySelectorAll('select').forEach(select => {
     select.addEventListener('change', function() {
         this.closest('form').submit();
     });
+});
+
+// Auto-submit form on date change
+document.getElementById('date').addEventListener('change', function() {
+    this.closest('form').submit();
 });
 </script>
 

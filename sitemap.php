@@ -456,8 +456,8 @@ include 'header.php';
                 <p class="section-description">Informasi penting dan kebijakan</p>
             </div>
             <ul class="sitemap-links">
-                <li><a href="syarat.php" class="sitemap-link"><i class="fas fa-file-contract"></i>Syarat & Ketentuan</a></li>
-                <li><a href="privasi.php" class="sitemap-link"><i class="fas fa-lock"></i>Kebijakan Privasi</a></li>
+                <li><a href="<?php echo base_url('syarat.php'); ?>" class="sitemap-link"><i class="fas fa-file-contract"></i>Syarat & Ketentuan</a></li>
+                <li><a href="<?php echo base_url('privasi.php'); ?>" class="sitemap-link"><i class="fas fa-lock"></i>Kebijakan Privasi</a></li>
                 <li><a href="visi-misi.php" class="sitemap-link"><i class="fas fa-bullseye"></i>Visi & Misi</a></li>
             </ul>
         </div>

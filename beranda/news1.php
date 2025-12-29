@@ -1,4 +1,4 @@
-<?php include '../header.php'; ?>
+<?php include 'header.php'; ?>
 
 <style>
     /* Reset & Base Styles */
@@ -530,4 +530,4 @@
     </div>
 </div>
 
-<?php include '../footer.php'; ?>
+<?php include 'footer.php'; ?>
