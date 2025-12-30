@@ -14,11 +14,6 @@ Website booking transportasi bus modern dengan fitur lengkap.
 3. Import file: `database_schema.sql`
 4. Atau jalankan: `http://localhost/UAS/setup.php`
 
-### 3. Test Website
-- Halaman utama: `http://localhost/UAS/`
-- Test includes: `http://localhost/UAS/test-includes.php`
-- Test database: `http://localhost/UAS/test-db.php`
-
 ## 📁 Struktur Folder
 
 ```
