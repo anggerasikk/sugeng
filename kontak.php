@@ -287,9 +287,67 @@ include 'header.php';
         transform: scale(1.2);
     }
 
+    @media (max-width: 1024px) {
+        .contact-hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .contact-hero p {
+            font-size: 1.1rem;
+        }
+
+        .contact-grid {
+            gap: 50px;
+        }
+
+        .contact-form-section {
+            padding: 35px;
+        }
+
+        .contact-form h2 {
+            font-size: 1.8rem;
+        }
+
+        .info-card {
+            padding: 25px;
+        }
+
+        .info-title {
+            font-size: 1.2rem;
+        }
+
+        .map-title {
+            font-size: 2.2rem;
+        }
+
+        .faq-title {
+            font-size: 2.2rem;
+        }
+
+        .social-section h2 {
+            font-size: 2.2rem;
+        }
+
+        .social-section p {
+            font-size: 1rem;
+        }
+    }
+
     @media (max-width: 768px) {
+        .contact-container {
+            padding: 0 15px;
+        }
+
+        .contact-hero {
+            padding: 40px 0;
+        }
+
         .contact-hero h1 {
             font-size: 2rem;
+        }
+
+        .contact-hero p {
+            font-size: 1rem;
         }
 
         .contact-grid {
@@ -301,9 +359,249 @@ include 'header.php';
             padding: 30px 20px;
         }
 
+        .contact-form h2 {
+            font-size: 1.6rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 12px;
+            font-size: 0.95rem;
+        }
+
+        .btn-submit {
+            padding: 12px 30px;
+            font-size: 1rem;
+        }
+
+        .info-card {
+            padding: 20px;
+        }
+
+        .info-icon {
+            font-size: 2.5rem;
+        }
+
+        .info-title {
+            font-size: 1.1rem;
+        }
+
+        .info-content p {
+            font-size: 0.9rem;
+        }
+
+        .map-section {
+            padding: 30px;
+        }
+
+        .map-title {
+            font-size: 2rem;
+        }
+
+        .map-container {
+            height: 350px;
+        }
+
+        .faq-section {
+            padding: 50px 0;
+        }
+
+        .faq-title {
+            font-size: 2rem;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+        }
+
+        .faq-question {
+            padding: 20px;
+        }
+
+        .faq-question h3 {
+            font-size: 1rem;
+        }
+
+        .faq-toggle {
+            font-size: 1.3rem;
+        }
+
+        .faq-answer p {
+            font-size: 0.9rem;
+        }
+
+        .social-section {
+            padding: 50px 0;
+        }
+
+        .social-section h2 {
+            font-size: 2rem;
+        }
+
+        .social-section p {
+            font-size: 0.95rem;
+        }
+
         .social-links {
             flex-wrap: wrap;
             gap: 20px;
+        }
+
+        .social-link {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .contact-container {
+            margin: 40px auto;
+            padding: 0 10px;
+        }
+
+        .contact-hero {
+            padding: 30px 0;
+            margin-bottom: 50px;
+        }
+
+        .contact-hero h1 {
+            font-size: 1.8rem;
+        }
+
+        .contact-hero p {
+            font-size: 0.95rem;
+        }
+
+        .contact-grid {
+            gap: 30px;
+        }
+
+        .contact-form-section {
+            padding: 25px 15px;
+            border-radius: 12px;
+        }
+
+        .contact-form h2 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .btn-submit {
+            padding: 12px 25px;
+            font-size: 0.95rem;
+        }
+
+        .info-card {
+            padding: 18px;
+            border-radius: 12px;
+        }
+
+        .info-icon {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .info-title {
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .info-content p {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .map-section {
+            padding: 25px 15px;
+            margin-bottom: 60px;
+            border-radius: 12px;
+        }
+
+        .map-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .map-container {
+            height: 280px;
+            border-radius: 8px;
+        }
+
+        .faq-section {
+            padding: 40px 0;
+            margin-bottom: 60px;
+        }
+
+        .faq-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .faq-grid {
+            padding: 0 5px;
+        }
+
+        .faq-item {
+            margin-bottom: 12px;
+            border-radius: 12px;
+        }
+
+        .faq-question {
+            padding: 18px 15px;
+        }
+
+        .faq-question h3 {
+            font-size: 0.95rem;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+        }
+
+        .faq-answer {
+            padding: 15px;
+        }
+
+        .faq-answer p {
+            font-size: 0.85rem;
+        }
+
+        .social-section {
+            padding: 40px 0;
+            border-radius: 12px;
+        }
+
+        .social-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .social-section p {
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .social-links {
+            gap: 15px;
+        }
+
+        .social-link {
+            font-size: 1.6rem;
         }
     }
 </style>

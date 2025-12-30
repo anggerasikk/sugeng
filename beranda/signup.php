@@ -425,17 +425,6 @@ include 'header.php';
                 <!-- Sign Up Button -->
                 <button type="submit" class="auth-button">Sign up</button>
 
-                <!-- Divider -->
-                <div class="divider">
-                    <span>or</span>
-                </div>
-
-                <!-- Google Sign Up -->
-                <button type="button" class="google-button">
-                    <span>G</span>
-                    Sign up with Google
-                </button>
-
                 <!-- Sign In Link -->
                 <div class="auth-footer">
                     Already have an account? <a href="signin.php">Sign in</a>

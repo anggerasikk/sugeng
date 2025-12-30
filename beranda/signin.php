@@ -443,17 +443,6 @@ include 'header.php';
                 <!-- Sign In Button -->
                 <button type="submit" class="auth-button">Sign In</button>
 
-                <!-- Divider -->
-                <div class="divider">
-                    <span>or</span>
-                </div>
-
-                <!-- Google Sign In -->
-                <button type="button" class="google-button">
-                    <span>G</span>
-                    Sign in with Google
-                </button>
-
                 <!-- Sign Up Link -->
                 <div class="auth-footer">
                     Don't have an account? <a href="signup.php">Sign up</a>

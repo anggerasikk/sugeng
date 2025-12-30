@@ -189,7 +189,7 @@ $light_cream = "#F5F1DC";
             }
 
             .auth-buttons {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 10px;
             }
 
@@ -214,6 +214,12 @@ $light_cream = "#F5F1DC";
             }
         }
     </style>
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+    </script>
 </head>
 <body>
     <header class="header">

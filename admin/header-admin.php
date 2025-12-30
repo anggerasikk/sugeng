@@ -72,7 +72,7 @@ if (!is_admin()) {
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
         }
 
         .nav-item {
@@ -80,28 +80,72 @@ if (!is_admin()) {
         }
 
         .nav-link {
-            color: white;
+            color: #ffffff !important;
             text-decoration: none;
             font-weight: 500;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 6px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 0.9rem;
         }
 
         .nav-link:hover {
             background: rgba(255,255,255,0.1);
+            color: #ffffff !important;
         }
 
         .nav-link.active {
             background: rgba(255,255,255,0.2);
             font-weight: 600;
+            color: #ffffff !important;
+        }
+
+        .nav-link:visited {
+            color: #ffffff !important;
         }
 
         .nav-icon {
-            font-size: 1.1rem;
+            font-size: 1rem;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Mobile Menu Styles */
+        .nav-menu.active {
+            display: flex !important;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #001BB7 0%, #0033CC 100%);
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            gap: 15px;
+        }
+
+        .nav-menu.active .nav-link {
+            justify-content: flex-start;
+            padding: 12px 16px;
+            border-radius: 8px;
         }
 
         .nav-user {
@@ -232,7 +276,11 @@ if (!is_admin()) {
             }
 
             .nav-menu {
-                display: none; /* Hide menu on mobile, could add hamburger later */
+                display: none; /* Hide menu on mobile */
+            }
+
+            .mobile-menu-btn {
+                display: block; /* Show hamburger button on mobile */
             }
 
             .main-content {
@@ -245,6 +293,12 @@ if (!is_admin()) {
             }
         }
     </style>
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+    </script>
 </head>
 <body>
     <!-- Top Navigation Bar -->
@@ -254,7 +308,9 @@ if (!is_admin()) {
             <span>Admin Panel</span>
         </div>
 
-        <div class="nav-menu">
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+
+        <div class="nav-menu" id="navMenu">
             <div class="nav-item">
                 <a href="<?php echo base_url('admin/index.php'); ?>" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : ''; ?>">
                     <span class="nav-icon">📊</span>

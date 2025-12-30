@@ -318,25 +318,213 @@ include 'header.php';
         transform: rotate(45deg);
     }
 
+    @media (max-width: 1024px) {
+        .rute-hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .rute-hero p {
+            font-size: 1.1rem;
+        }
+
+        .rute-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .terminal-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+
     @media (max-width: 768px) {
+        .rute-container {
+            padding: 0 15px;
+        }
+
+        .rute-hero {
+            padding: 40px 0;
+        }
+
         .rute-hero h1 {
             font-size: 2rem;
         }
 
+        .rute-hero p {
+            font-size: 1rem;
+        }
+
         .rute-grid {
             grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .rute-card {
+            margin: 0 auto;
+            max-width: 400px;
+        }
+
+        .rute-content {
+            padding: 20px;
+        }
+
+        .rute-title {
+            font-size: 1.3rem;
         }
 
         .rute-details {
             grid-template-columns: 1fr;
+            gap: 10px;
         }
 
         .terminal-grid {
             grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .terminal-card {
+            padding: 20px;
+        }
+
+        .terminal-name {
+            font-size: 1.2rem;
         }
 
         .faq-grid {
             padding: 0 10px;
+        }
+
+        .faq-title {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .rute-container {
+            margin: 40px auto;
+            padding: 0 10px;
+        }
+
+        .rute-hero {
+            padding: 30px 0;
+            margin-bottom: 40px;
+        }
+
+        .rute-hero h1 {
+            font-size: 1.8rem;
+        }
+
+        .rute-hero p {
+            font-size: 0.95rem;
+        }
+
+        .rute-grid {
+            gap: 20px;
+        }
+
+        .rute-card {
+            max-width: 100%;
+        }
+
+        .rute-image {
+            height: 150px;
+            font-size: 3rem;
+        }
+
+        .rute-content {
+            padding: 15px;
+        }
+
+        .rute-title {
+            font-size: 1.2rem;
+        }
+
+        .rute-description {
+            font-size: 0.9rem;
+        }
+
+        .rute-features {
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .feature-tag {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+        }
+
+        .btn-rute {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        .map-title {
+            font-size: 2rem;
+        }
+
+        .map-container {
+            height: 300px;
+        }
+
+        .terminal-title {
+            font-size: 2rem;
+        }
+
+        .terminal-card {
+            padding: 15px;
+        }
+
+        .terminal-image {
+            height: 150px;
+            font-size: 2.5rem;
+        }
+
+        .terminal-name {
+            font-size: 1.1rem;
+        }
+
+        .terminal-address {
+            font-size: 0.9rem;
+        }
+
+        .terminal-facilities {
+            gap: 10px;
+        }
+
+        .facility-icon {
+            font-size: 1.2rem;
+        }
+
+        .terminal-hours {
+            font-size: 0.9rem;
+        }
+
+        .faq-section {
+            padding: 40px 0;
+        }
+
+        .faq-title {
+            font-size: 1.8rem;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+        }
+
+        .faq-question {
+            padding: 20px;
+        }
+
+        .faq-question h3 {
+            font-size: 1rem;
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+        }
+
+        .faq-answer p {
+            font-size: 0.9rem;
         }
     }
 </style>
