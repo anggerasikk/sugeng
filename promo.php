@@ -156,17 +156,203 @@ include 'header.php';
         font-size: 1.1rem;
     }
 
+    @media (max-width: 1024px) {
+        .promo-hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .promo-hero p {
+            font-size: 1.1rem;
+        }
+
+        .promo-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .promo-stats {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        .promo-banner h2 {
+            font-size: 2.2rem;
+        }
+
+        .promo-banner p {
+            font-size: 1rem;
+        }
+    }
+
     @media (max-width: 768px) {
+        .promo-container {
+            padding: 0 15px;
+        }
+
+        .promo-hero {
+            padding: 40px 0;
+        }
+
         .promo-hero h1 {
             font-size: 2rem;
         }
 
+        .promo-hero p {
+            font-size: 1rem;
+        }
+
         .promo-grid {
             grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .promo-card {
+            margin: 0 auto;
+            max-width: 400px;
+        }
+
+        .promo-content {
+            padding: 25px;
+        }
+
+        .promo-title {
+            font-size: 1.4rem;
+        }
+
+        .promo-description {
+            font-size: 0.95rem;
+        }
+
+        .promo-discount {
+            font-size: 1.8rem;
+        }
+
+        .promo-validity {
+            font-size: 0.85rem;
+        }
+
+        .btn-promo {
+            padding: 10px 25px;
+            font-size: 0.95rem;
+        }
+
+        .promo-banner {
+            padding: 35px;
+        }
+
+        .promo-banner h2 {
+            font-size: 1.8rem;
+        }
+
+        .promo-banner p {
+            font-size: 0.95rem;
         }
 
         .promo-stats {
             grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .stat-item {
+            padding: 25px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .promo-container {
+            margin: 40px auto;
+            padding: 0 10px;
+        }
+
+        .promo-hero {
+            padding: 30px 0;
+            margin-bottom: 50px;
+        }
+
+        .promo-hero h1 {
+            font-size: 1.8rem;
+        }
+
+        .promo-hero p {
+            font-size: 0.95rem;
+        }
+
+        .promo-grid {
+            gap: 15px;
+        }
+
+        .promo-card {
+            max-width: 100%;
+        }
+
+        .promo-image {
+            height: 180px;
+            font-size: 3.5rem;
+        }
+
+        .promo-content {
+            padding: 20px;
+        }
+
+        .promo-title {
+            font-size: 1.3rem;
+        }
+
+        .promo-description {
+            font-size: 0.9rem;
+        }
+
+        .promo-discount {
+            font-size: 1.6rem;
+        }
+
+        .promo-validity {
+            font-size: 0.8rem;
+        }
+
+        .btn-promo {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        .promo-banner {
+            padding: 30px 20px;
+            margin-bottom: 50px;
+        }
+
+        .promo-banner h2 {
+            font-size: 1.6rem;
+        }
+
+        .promo-banner p {
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .promo-stats {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
         }
     }
 </style>

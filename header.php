@@ -188,7 +188,7 @@ $light_cream = "#F5F1DC";
             }
 
             .auth-buttons {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 10px;
             }
 

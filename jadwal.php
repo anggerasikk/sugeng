@@ -708,17 +708,66 @@ while($row = mysqli_fetch_assoc($bus_types_result)) {
     }
 
     @media (max-width: 768px) {
+        .jadwal-container {
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .jadwal-header {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
         .jadwal-header h1 {
             font-size: 2rem;
         }
 
+        .jadwal-header p {
+            font-size: 1rem;
+        }
+
+        .filter-section {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
         .filter-form {
             grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+        }
+
+        .form-select, .form-input {
+            padding: 10px 12px;
+            font-size: 0.95rem;
+        }
+
+        .btn-filter, .btn-reset {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+
+        .search-summary {
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-info {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .schedule-card {
+            padding: 20px;
         }
 
         .schedule-header {
             flex-direction: column;
             gap: 20px;
+            padding-bottom: 15px;
         }
 
         .price-section {
@@ -729,11 +778,13 @@ while($row = mysqli_fetch_assoc($bus_types_result)) {
         .route-main {
             flex-direction: column;
             text-align: center;
+            gap: 10px;
         }
 
         .arrow-container {
             transform: rotate(90deg);
             margin: 10px 0;
+            font-size: 1.5rem;
         }
 
         .city-name {
@@ -745,15 +796,107 @@ while($row = mysqli_fetch_assoc($bus_types_result)) {
             gap: 10px;
         }
 
+        .time-item {
+            padding: 6px 10px;
+            font-size: 0.9rem;
+        }
+
+        .price {
+            font-size: 1.5rem;
+        }
+
+        .schedule-details {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .detail-item {
+            padding: 10px;
+        }
+
+        .detail-icon {
+            font-size: 1.3rem;
+        }
+
+        .facilities {
+            gap: 8px;
+        }
+
+        .facility-tag {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+        }
+
         .schedule-footer {
             flex-direction: column;
             gap: 15px;
             align-items: stretch;
+            padding-top: 15px;
         }
 
         .btn-book {
             width: 100%;
             text-align: center;
+            padding: 10px 20px;
+        }
+
+        .no-results {
+            padding: 40px 20px;
+        }
+
+        .no-results-icon {
+            font-size: 3rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.3rem;
+        }
+
+        .no-results p {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .jadwal-container {
+            padding: 0 10px;
+        }
+
+        .jadwal-header {
+            padding: 15px;
+        }
+
+        .jadwal-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .jadwal-header p {
+            font-size: 0.95rem;
+        }
+
+        .filter-section {
+            padding: 15px;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+        }
+
+        .schedule-card {
+            padding: 15px;
+        }
+
+        .city-name {
+            font-size: 1.3rem;
+        }
+
+        .price {
+            font-size: 1.3rem;
+        }
+
+        .btn-book {
+            padding: 8px 15px;
+            font-size: 0.95rem;
         }
     }
 </style>

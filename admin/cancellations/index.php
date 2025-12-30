@@ -76,6 +76,7 @@ $rejected_cancellations = $stats['rejected'] ?? 0;
         font-weight: 700;
         margin-bottom: 8px;
         text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        color: white;
     }
 
     .page-subtitle {
@@ -250,7 +251,7 @@ $rejected_cancellations = $stats['rejected'] ?? 0;
     .filters-title {
         font-size: 1.3rem;
         font-weight: 600;
-        color: #001BB7;
+        color: #333;
         margin: 0;
     }
 
@@ -268,7 +269,7 @@ $rejected_cancellations = $stats['rejected'] ?? 0;
 
     .filter-label {
         font-weight: 600;
-        color: #001BB7;
+        color: #333;
         margin-bottom: 8px;
         font-size: 0.95rem;
     }
@@ -351,7 +352,7 @@ $rejected_cancellations = $stats['rejected'] ?? 0;
     th {
         background: #f8f9fa;
         font-weight: 600;
-        color: #001BB7;
+        color: #333;
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
