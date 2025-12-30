@@ -69,12 +69,20 @@ require_once 'config.php';
 $result = $koneksi->query("SELECT * FROM schedules");
 ```
 
+### Hasil Hosting 
+https://sugengrahayu.gt.tc/
+
 ## 📞 Support
 
 Email: support@sugengrrahayu.com
 WhatsApp: +62 812-3456-7890
 
----
+### Author
+1. Anggertha Nurrosyid (K3523013)
+2. Fathiika Arum Maulida (K3523029)
+3. Najela Najwa Anjani (K35230)
+4. Yatin Harsu Winarti (K3523077)
+
 
 **Status**: ✅ Website Ready for Testing
-**Last Update**: December 19, 2025
+**Last Update**: December 30, 2025
